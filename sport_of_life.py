@@ -14,6 +14,7 @@ import platform
 import subprocess
 import shutil
 import datetime
+import time
 
 # Application Libraries.
 
@@ -29,6 +30,12 @@ if __name__ == '__main__':
     print('\033[1;31mSport Of Life\033[0;m by Steve Walton.')
     print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
+
+    for nCount in range(10):
+        # print(nCount, end='\r', flush=True)
+        print(nCount)
+        time.sleep(1)
+        sys.stdout.write("\033[F")
 
     # Main loop.
 
