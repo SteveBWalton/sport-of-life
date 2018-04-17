@@ -11,7 +11,7 @@ except:
     print("pysqlite is not available");
     print("Try package python-sqlite2");
     sys.exit(1)
-
+import random
 
 
 class CPlayer:
@@ -52,7 +52,27 @@ class CPlayer:
             return self.name
         return '{} ({})'.format(self.name, self.ranking)
 
-
+    def RandomName(self, nCulture):
+        ''' Give the player a random name. '''
+        if nCulture == 1:
+            # Chinese names.
+            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao']
+            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng']
+        else:
+            # English names.
+            FirstNames = ['Steven', 'Steve', 'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme']
+            LastNames =  ['Walton', 'Davis', 'Hendry',  'Johnson', 'Lumby',  'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill',  'Dott']
+        
+        nFirstNameIndex = random.randint(0, len(FirstNames)-1)
+        nLastNameIndex = random.randint(0, len(LastNames)-1)
+        self.name = '{} {}'.format(FirstNames[nFirstNameIndex], LastNames[nLastNameIndex])
+        if nFirstNameIndex == nLastNameIndex:
+            print('Boost for {}'.format(self.name))
+            self.skill += 100
+            if nFirstNameIndex == 0 and nCulture == 0:
+                self.skill += 100
+    
+        
         
     def Read(self, SportID):
         '''
