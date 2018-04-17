@@ -32,10 +32,16 @@ if __name__ == '__main__':
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
 
     for nCount in range(10):
-        # print(nCount, end='\r', flush=True)
-        print(nCount)
+        # This works on Windows but not in IDLE.
+        print(nCount, end='\r', flush=True)
+
+        # This does not work in Windows.
+        # print(nCount)
+        # sys.stdout.write("\033[F")
+
+        # Wait for a second.
         time.sleep(1)
-        sys.stdout.write("\033[F")
+        
 
     # Main loop.
 
