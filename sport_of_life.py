@@ -31,10 +31,10 @@ def PlayMatch(oPlayer1, oPlayer2, nWin):
             nScore1 += 1
         else:
             nScore2 += 1
-        print('{:>20} {:>2} - {:<2} {:<20}'.format(oPlayer1.name, nScore1, nScore2, oPlayer2.name), end='\r', flush=True)
+        print('{:>20} {:>2} - {:<2} {:<20}'.format(oPlayer1.NameWithRanking(), nScore1, nScore2, oPlayer2.NameWithRanking()), end='\r', flush=True)
 
         # Wait.
-        time.sleep(0.5)
+        time.sleep(0.25)
 
     print()
 
@@ -45,79 +45,100 @@ def PlayMatch(oPlayer1, oPlayer2, nWin):
 
 
 
-def PlayRound(oPlayers, nKey, nNumMatches, nScore):
+def PlayRound(oPlayers, nKeyHome, nKeyAway, nKeyWin, nKeyLose, nNumMatches, nScore):
     ''' Play a round of a tournament. '''
     for nMatch in range(nNumMatches):
         nPlayer1 = random.randint(0, len(oPlayers)-1)
-        while oPlayers[nPlayer1].round != nKey:
+        while oPlayers[nPlayer1].round != nKeyHome:
             nPlayer1 = random.randint(0, len(oPlayers)-1)
-        oPlayers[nPlayer1].round = nKey+1
+        oPlayers[nPlayer1].round = nKeyWin
 
         nPlayer2 = random.randint(0, len(oPlayers)-1)
-        while oPlayers[nPlayer2].round != nKey:
+        while oPlayers[nPlayer2].round != nKeyHome:
             nPlayer2 = random.randint(0, len(oPlayers)-1)
-        oPlayers[nPlayer2].round = nKey+1
+        oPlayers[nPlayer2].round = nKeyWin
 
         oWinner, oLoser = PlayMatch(oPlayers[nPlayer1], oPlayers[nPlayer2], nScore)
-        oLoser.round = 0
+        oLoser.round = nKeyLose
 
-
-
-def Run():
-    ''' Execute the sport of life game. '''
-    oPlayer1 = modPlayer.CPlayer(None)
-    oPlayer2 = modPlayer.CPlayer(None)
-    oPlayer1.name = "Steve Davis"
-    oPlayer1.skill = 550
-    oPlayer2.name = "Stephen Hendry"
-    oPlayers = []
-    for nLoop in range(16):
-        oPlayer = modPlayer.CPlayer(None)
-        oPlayer.name = 'Player {}'.format(nLoop)
-        oPlayer.skill = random.randint(100, 999)
+        
+        
+def PlayTournament(oPlayers):
+    ''' Play a tournament with all the players. '''
+    for oPlayer in oPlayers:
         oPlayer.round = 1
-        oPlayers.append(oPlayer)
 
     # Round One.
     print('Round One')
-    PlayRound(oPlayers, 1, 8, 10)
-    #for nMatch in range(8):
-    #    nPlayer1 = random.randint(0, len(oPlayers)-1)
-    #    while oPlayers[nPlayer1].round != 1:
-    #        nPlayer1 = random.randint(0, len(oPlayers)-1)
-    #    oPlayers[nPlayer1].round = 2
-    #
-    #    nPlayer2 = random.randint(0, len(oPlayers)-1)
-    #    while oPlayers[nPlayer2].round != 1:
-    #        nPlayer2 = random.randint(0, len(oPlayers)-1)
-    #    oPlayers[nPlayer2].round = 2
-    #
-    #    oWinner, oLoser = PlayMatch(oPlayers[nPlayer1], oPlayers[nPlayer2], 10)
-    #    oLoser.round = 0
+    PlayRound(oPlayers, 1, 1, 2, -1, 16, 10)
+
+    # Round Two.
+    print('Round Two')
+    PlayRound(oPlayers, 2, 2, 3, -2, 8, 13)
 
     # Quarter Finals.
     print('Quarter Finals')
-    PlayRound(oPlayers, 2, 4, 13)
-    #for nMatch in range(4):
-    #    nPlayer1 = random.randint(0, len(oPlayers)-1)
-    #    while oPlayers[nPlayer1].round != 2:
-    #        nPlayer1 = random.randint(0, len(oPlayers)-1)
-    #    oPlayers[nPlayer1].round = 3
-    #
-    #    nPlayer2 = random.randint(0, len(oPlayers)-1)
-    #    while oPlayers[nPlayer2].round != 2:
-    #        nPlayer2 = random.randint(0, len(oPlayers)-1)
-    #    oPlayers[nPlayer2].round = 3
-    #
-    #    oWinner, oLoser = PlayMatch(oPlayers[nPlayer1], oPlayers[nPlayer2], 10)
-    #    oLoser.round = 0
+    PlayRound(oPlayers, 3, 3, 4, -3, 4, 13)
 
     # Semi Finals.
     print('Semi Finals')
-    PlayRound(oPlayers, 3, 2, 17)
+    PlayRound(oPlayers, 4, 4, 5, -4, 2, 17)
 
     print('Final')
-    PlayRound(oPlayers, 4, 1, 18)
+    PlayRound(oPlayers, 5, 5, -6, -5, 1, 18)
+
+    # Allocate ranking points.
+    for oPlayer in oPlayers:
+        nPts = [0, 1, 2, 4, 8, 16, 32][-oPlayer.round]
+        oPlayer.history.append(nPts)
+        while len(oPlayer.history) > 3:
+            del oPlayer.history[0]
+        oPlayer.pts = 0 
+        for nPts in oPlayer.history:
+            oPlayer.pts += nPts
+    
+    
+    
+def ShowRanking(oPlayers, bUpdate):
+    ''' Display the players in ranking points order. '''
+    # Sort by pts.
+    oPlayers = sorted(oPlayers, key=lambda CPlayer: CPlayer.pts, reverse=True)
+    # oPlayers = sorted(oPlayers, key=attrgetter('pts'), reverse=True)
+    
+    print('Top 10')
+    nCount = 1
+    for oPlayer in oPlayers: 
+        if nCount <= 10:
+            print('{:>5} {:<20}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.pts), end='')
+            for nPts in oPlayer.history:
+                print('{:>3}'.format(nPts), end='')
+            print()   
+        if bUpdate:
+            oPlayer.ranking = nCount
+        nCount = nCount + 1
+
+        
+    
+def Run():
+    ''' Execute the sport of life game. '''
+    oPlayers = []
+    for nLoop in range(32):
+        oPlayer = modPlayer.CPlayer(None)
+        oPlayer.name = 'Player {}'.format(nLoop+1)
+        oPlayer.skill = random.randint(100, 999)
+        oPlayers.append(oPlayer)
+
+    PlayTournament(oPlayers)
+    ShowRanking(oPlayers, True)
+    
+    PlayTournament(oPlayers)
+    ShowRanking(oPlayers, True)
+
+    PlayTournament(oPlayers)
+    ShowRanking(oPlayers, True)
+
+    PlayTournament(oPlayers)
+    ShowRanking(oPlayers, True)
 
 
 if __name__ == '__main__':

@@ -40,9 +40,20 @@ class CPlayer:
         self.name = 'No Name'
         self.skill = 500
         self.round = 0
+        self.pts = 0
+        self.history = []
+        self.ranking = 128
+
+        
+        
+    def NameWithRanking(self):
+        ''' Returns the name with ranking if top 8. '''
+        if self.ranking > 8:
+            return self.name
+        return '{} ({})'.format(self.name, self.ranking)
 
 
-
+        
     def Read(self, SportID):
         '''
         Read this sport from the database.
