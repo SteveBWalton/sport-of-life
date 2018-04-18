@@ -43,9 +43,12 @@ class CPlayer:
         self.pts = 0
         self.history = []
         self.ranking = 128
+        self.wins = 0
+        self.runner_up = 0
+        self.top_ranking = 0
 
-        
-        
+
+
     def NameWithRanking(self):
         ''' Returns the name with ranking if top 8. '''
         if self.ranking > 8:
@@ -56,13 +59,13 @@ class CPlayer:
         ''' Give the player a random name. '''
         if nCulture == 1:
             # Chinese names.
-            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao']
-            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng']
+            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao',    'Junjie', 'Zhang', 'Chen', 'Xu']
+            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si']
         else:
             # English names.
-            FirstNames = ['Steven', 'Steve', 'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme']
-            LastNames =  ['Walton', 'Davis', 'Hendry',  'Johnson', 'Lumby',  'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill',  'Dott']
-        
+            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme', 'John',    'Eddie',    'Kirk',    'Cliff',    'Perrie', 'Ricky',   'Jimmy', 'Daniel', 'Tom',  'Nigel', 'Scott', 'Lewis', 'Damon', 'Jim', ]
+            LastNames =  ['Walton', 'Davis', 'Hendry',  'Johnson', 'Lumby',  'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill',  'Dott',   'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans',    'Walden', 'White', 'Wells',  'Ford', 'Bond', 'Donaldson', 'Hamilton', 'Hill', 'Clark']
+
         nFirstNameIndex = random.randint(0, len(FirstNames)-1)
         nLastNameIndex = random.randint(0, len(LastNames)-1)
         self.name = '{} {}'.format(FirstNames[nFirstNameIndex], LastNames[nLastNameIndex])
@@ -71,9 +74,9 @@ class CPlayer:
             self.skill += 100
             if nFirstNameIndex == 0 and nCulture == 0:
                 self.skill += 100
-    
-        
-        
+
+
+
     def Read(self, SportID):
         '''
         Read this sport from the database.
