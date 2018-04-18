@@ -37,6 +37,12 @@ class CPlayer:
         '''
         # The database that this sport is stored in.
         self.database = Database
+        self.Reset()
+
+
+
+    def Reset(self):
+        ''' Reset the player to the initial state. '''
         self.name = 'No Name'
         self.skill = 500
         self.round = 0
@@ -46,6 +52,25 @@ class CPlayer:
         self.wins = 0
         self.runner_up = 0
         self.top_ranking = 0
+        self.age = 17
+
+
+
+    def Retire(self):
+        ''' Returns a retired copy of the player. '''
+        oRetiredPlayer = CPlayer(self.database)
+        oRetiredPlayer.name = self.name
+        oRetiredPlayer.skill = 0
+        oRetiredPlayer.round = 0
+        oRetiredPlayer.pts = 0
+        oRetiredPlayer.history = []
+        oRetiredPlayer.ranking = 9999
+        oRetiredPlayer.wins = self.wins
+        oRetiredPlayer.runner_up = self.runner_up
+        oRetiredPlayer.top_ranking = self.top_ranking
+        oRetiredPlayer.age = self.age
+
+        return oRetiredPlayer
 
 
 
@@ -54,6 +79,8 @@ class CPlayer:
         if self.ranking > 8:
             return self.name
         return '{} ({})'.format(self.name, self.ranking)
+
+
 
     def RandomName(self, nCulture):
         ''' Give the player a random name. '''
