@@ -19,7 +19,7 @@ import random
 
 # Application Libraries.
 import modPlayer
-
+import modANSI
 
 
 def PlayMatch(oPlayer1, oPlayer2, nWin):
@@ -232,6 +232,7 @@ def PlayWorldChampionshipTournament(oPlayers):
         elif oPlayer.round == -6:
             oWinner = oPlayer
             oWinner.wins += 1
+            oWinner.world_champion += 1
         elif oPlayer.round == -5:
             oPlayer.runner_up += 1
 
@@ -315,7 +316,15 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
         if nCount <= nNumShow:
             if nCount == 1:
                 oPlayer.top_ranking += 1
-            print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.pts), end='')
+            if oPlayer.age >= 50:
+                sColour = modANSI.BOLD_CYAN
+            elif oPlayer.age >= 40:
+                sColour = modANSI.CYAN
+            elif oPlayer.age <= 21:
+                sColour = modANSI.YELLOW
+            else:
+                sColour = ''
+            print('{:>5} {}{:<22}{}{:>4}'.format(nCount, sColour, oPlayer.NameWithRanking(), modANSI.RESET_ALL, oPlayer.pts), end='')
             for nPts in oPlayer.history:
                 print('{:>3}'.format(nPts), end='')
 
@@ -328,6 +337,50 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
 
     # Wait.
     time.sleep(1)
+
+
+def UpdateSkill(oPlayers):
+    ''' Update the skill of the players. '''
+    for oPlayer in oPlayers:
+        # Add age related skill.
+        if oPlayer.age < 20:
+            oPlayer.skill += 10
+        elif oPlayer.age < 24:
+            oPlayer.skill += 5
+        elif oPlayer.age > 40:
+            oPlayer.skill -= 20
+        elif oPlayer.age > 35:
+            oPlayer.skill -= 10
+        elif oPlayer.age > 30:
+            oPlayer.skill -= 2
+
+        # Add random skill.
+        oPlayer.skill += random.randint(-10, 10)
+
+        # Reset the short term shifts.
+        if oPlayer.skill_offset != 0:
+            if oPlayer.skill_offset > 0:
+                oPlayer.skill += 100
+                oPlayer.skill_offset -= 100
+                print('{} is injuried ({}, {})'.format(oPlayer.NameWithRanking(), oPlayer.skill, oPlayer.skill_offset))
+            else:
+                oPlayer.skill -= 100
+                oPlayer.skill_offset += 100
+                print('{} is boosted ({}, {})'.format(oPlayer.NameWithRanking(), oPlayer.skill, oPlayer.skill_offset))
+
+
+        if random.randint(0, 1000) == 0:
+           print('{} has a boost.'.format(oPlayer.NameWithRanking()))
+           oPlayer.skill += 500
+           oPlayer.skill_offset -= 500
+        if random.randint(0, 100) == 0:
+            print('{} has an injury.'.format(oPlayer.NameWithRanking()))
+            oPlayer.skill -= 500
+            oPlayer.skill_offset += 500
+
+
+        if oPlayer.skill < 100:
+            oPlayer.skill = 100
 
 
 
@@ -348,19 +401,6 @@ def AddAge(oPlayers, oRetiredPlayers):
             oPlayer.RandomName(nCulture)
             print('{} has joined the tour.'.format(oPlayer.name))
 
-        # Add age related skill.
-        if oPlayer.age < 24:
-            oPlayer.skill += 30
-        elif oPlayer.age > 40:
-            oPlayer.skill -= 40
-        elif oPlayer.age > 35:
-            oPlayer.skill -= 20
-
-        # Add random skill.
-        oPlayer.skill += random.randint(-50, 50)
-        if oPlayer.skill < 100:
-            oPlayer.skill = 100
-
     # Wait.
     time.sleep(1)
 
@@ -379,10 +419,10 @@ def ShowWins(oPlayers, oRetiredPlayers):
     for oPlayer in oPlayers:
         if oPlayer.wins > 0 or oPlayer.runner_up > 0:
             if oPlayer.ranking > 500:
-                print('{:>5} \033[1;31m{:<22}\033[0;m{:>4}{:>4}{:>8}'.format(nCount, oPlayer.name, oPlayer.wins, oPlayer.runner_up, oPlayer.top_ranking), end='')
+                print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6), end='')
 
             else:
-                print('{:>5} {:<22}{:>4}{:>4}{:>8}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.runner_up, oPlayer.top_ranking), end='')
+                print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6), end='')
 
             print()
         nCount = nCount + 1
@@ -392,7 +432,7 @@ def ShowWins(oPlayers, oRetiredPlayers):
 
 
 
-def Season(oPlayers, oSeasons, oRetiredPlayers):
+def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     ''' Execute a season in the sport of life game. '''
     oWinner = PlayOpenTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
@@ -400,7 +440,10 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
     sSeason = '{:<22}'.format(oWinner.name)
     for sHistory in oSeasons:
         print(sHistory)
-    print('{}{}'.format(' ' * 22 * 5, sSeason))
+    print('{} {}{}'.format(nSeason, ' ' * (22 * 5), sSeason))
+    oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
+    oWinner.last_win = nSeason
+    UpdateSkill(oPlayers)
 
     oWinner = PlaySeededTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
@@ -408,7 +451,10 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
     for sHistory in oSeasons:
         print(sHistory)
-    print('{}{}'.format(' ' * 22 * 4, sSeason))
+    print('{} {}{}'.format(nSeason, ' ' * (22 * 4), sSeason))
+    oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
+    oWinner.last_win = nSeason
+    UpdateSkill(oPlayers)
 
     oWinner = PlayOpenTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
@@ -416,7 +462,10 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
     for sHistory in oSeasons:
         print(sHistory)
-    print('{}{}'.format(' ' * 22 * 3, sSeason))
+    print('{} {}{}'.format(nSeason, ' ' * (22 * 3), sSeason))
+    oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
+    oWinner.last_win = nSeason
+    UpdateSkill(oPlayers)
 
     oWinner = PlaySeededTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
@@ -424,7 +473,10 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
     for sHistory in oSeasons:
         print(sHistory)
-    print('{}{}'.format(' ' * 22 * 2, sSeason))
+    print('{} {}{}'.format(nSeason, ' ' * (22 * 2), sSeason))
+    oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
+    oWinner.last_win = nSeason
+    UpdateSkill(oPlayers)
 
     oWinner = PlayOpenTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
@@ -432,7 +484,10 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
     for sHistory in oSeasons:
         print(sHistory)
-    print('{}{}'.format(' ' * 22 * 1, sSeason))
+    print('{} {}{}'.format(nSeason, ' ' * (22 * 1), sSeason))
+    oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
+    oWinner.last_win = nSeason
+    UpdateSkill(oPlayers)
 
     oWinner = PlayWorldChampionshipTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
@@ -441,7 +496,10 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
     for sHistory in oSeasons:
         print(sHistory)
-    print(sSeason)
+    print('{} {}'.format(nSeason, sSeason))
+    oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
+    oWinner.last_win = nSeason
+    UpdateSkill(oPlayers)
 
     # Age and retire the players.
     oRetiredPlayers = AddAge(oPlayers, oRetiredPlayers)
@@ -472,12 +530,21 @@ def Run():
         oPlayers.append(oPlayer)
     print()
 
+    nPlayerID = random.randint(0, len(oPlayers)-1)
+    oPlayer = oPlayers[nPlayerID]
+    print('{} has an injury.'.format(oPlayer.name))
+    oPlayer.skill -= 600
+    oPlayer.skill_offset += 600
+    if oPlayer.skill < 100:
+        oPlayer.skill = 100
+    print('{} {} {}'.format(oPlayer.name, oPlayer.skill, oPlayer.skill_offset))
+
     oRetiredPlayers = []
     oSeasons = []
-    nLoop = 1
+    nLoop = 1970
     while nLoop > 1:
-        sSeason, oRetiredPlayers = Season(oPlayers, oSeasons, oRetiredPlayers)
-        oSeasons.append(sSeason)
+        sSeason, oRetiredPlayers = Season(oPlayers, oSeasons, oRetiredPlayers, nLoop)
+        oSeasons.append('{} {}'.format(nLoop, sSeason))
         nLoop += 1
 
         # Wait.
@@ -491,7 +558,7 @@ if __name__ == '__main__':
     oArgs = oParse.parse_args()
 
     # Welcome message.
-    print('\033[1;31mSport Of Life\033[0;m by Steve Walton.')
+    print('{}Sport Of Life{} by Steve Walton.'.format(modANSI.RED, modANSI.RESET_ALL))
     print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
 

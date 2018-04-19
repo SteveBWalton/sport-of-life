@@ -51,8 +51,12 @@ class CPlayer:
         self.ranking = 128
         self.wins = 0
         self.runner_up = 0
+        self.world_champion = 0
         self.top_ranking = 0
         self.age = 17
+        self.first_win = None
+        self.last_win = None
+        self.skill_offset = 0
 
 
 
@@ -67,8 +71,11 @@ class CPlayer:
         oRetiredPlayer.ranking = 9999
         oRetiredPlayer.wins = self.wins
         oRetiredPlayer.runner_up = self.runner_up
+        oRetiredPlayer.world_champion = self.world_champion
         oRetiredPlayer.top_ranking = self.top_ranking
         oRetiredPlayer.age = self.age
+        oRetiredPlayer.first_win = self.first_win
+        oRetiredPlayer.last_win = self.last_win
 
         return oRetiredPlayer
 
@@ -79,6 +86,16 @@ class CPlayer:
         if self.ranking > 8:
             return self.name
         return '{} ({})'.format(self.name, self.ranking)
+
+
+
+    def NameWithYearRange(self):
+        ''' Returns the name with a year range, if available. '''
+        if self.first_win == None:
+            return self.name
+        if self.first_win == self.last_win:
+            return '{} ({})'.format(self.name, self.first_win)
+        return '{} ({}-{})'.format(self.name, self.first_win, self.last_win)
 
 
 
@@ -98,9 +115,9 @@ class CPlayer:
         self.name = '{} {}'.format(FirstNames[nFirstNameIndex], LastNames[nLastNameIndex])
         if nFirstNameIndex == nLastNameIndex:
             print('Boost for {}. '.format(self.name), end='')
-            self.skill += 100
+            self.skill += 200
             if nFirstNameIndex == 0 and nCulture == 0:
-                self.skill += 100
+                self.skill += 200
 
 
 
