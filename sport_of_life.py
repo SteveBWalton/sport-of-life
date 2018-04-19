@@ -457,7 +457,8 @@ def Season(oPlayers, oSeasons, oRetiredPlayers):
 def Run():
     ''' Execute the sport of life game. '''
 
-    # Create 32 players.
+    # Create 64 players.
+    print('64 players join the tour. ', end='')
     oPlayers = []
     for nLoop in range(64):
         oPlayer = modPlayer.CPlayer(None)
@@ -469,12 +470,15 @@ def Run():
         else:
             oPlayer.RandomName(1)
         oPlayers.append(oPlayer)
+    print()
 
     oRetiredPlayers = []
     oSeasons = []
-    for nLoop in range(30):
+    nLoop = 1
+    while nLoop > 1:
         sSeason, oRetiredPlayers = Season(oPlayers, oSeasons, oRetiredPlayers)
         oSeasons.append(sSeason)
+        nLoop += 1
 
         # Wait.
         time.sleep(1)

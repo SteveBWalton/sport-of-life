@@ -86,8 +86,8 @@ class CPlayer:
         ''' Give the player a random name. '''
         if nCulture == 1:
             # Chinese names.
-            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao',    'Junjie', 'Zhang', 'Chen', 'Xu']
-            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si']
+            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao',    'Junjie', 'Zhang', 'Chen', 'Xu', 'Lyu']
+            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si', 'Haotian']
         else:
             # English names.
             FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme', 'John',    'Eddie',    'Kirk',    'Cliff',    'Perrie', 'Ricky',   'Jimmy', 'Daniel', 'Tom',  'Nigel', 'Scott', 'Lewis', 'Damon', 'Jim', ]
@@ -97,7 +97,7 @@ class CPlayer:
         nLastNameIndex = random.randint(0, len(LastNames)-1)
         self.name = '{} {}'.format(FirstNames[nFirstNameIndex], LastNames[nLastNameIndex])
         if nFirstNameIndex == nLastNameIndex:
-            print('Boost for {}'.format(self.name))
+            print('Boost for {}. '.format(self.name), end='')
             self.skill += 100
             if nFirstNameIndex == 0 and nCulture == 0:
                 self.skill += 100
