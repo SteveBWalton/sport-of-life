@@ -316,9 +316,9 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
         if nCount <= nNumShow:
             if nCount == 1:
                 oPlayer.top_ranking += 1
-            if oPlayer.age > 45:
+            if oPlayer.age >= 40:
                 sColour = modANSI.BOLD_CYAN
-            elif oPlayer.age > 35:
+            elif oPlayer.age >= 35:
                 sColour = modANSI.CYAN
             elif oPlayer.age <= 21:
                 sColour = modANSI.YELLOW
@@ -328,7 +328,8 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
             for nPts in oPlayer.history:
                 print('{:>3}'.format(nPts), end='')
 
-            print('  ({}, {})'.format(oPlayer.skill, oPlayer.age), end='')
+            print('      ({})'.format(oPlayer.age), end='')
+            print('      ({:>4})'.format(oPlayer.skill), end='')
 
             print()
         if bUpdate:
@@ -520,10 +521,9 @@ def Run():
     oPlayers = []
     for nLoop in range(64):
         oPlayer = modPlayer.CPlayer(None)
-        oPlayer.name = 'Player {}'.format(nLoop+1)
         oPlayer.skill = random.randint(100, 999)
         oPlayer.age = random.randint(18, 36)
-        if nLoop <= 48:
+        if nLoop < 62:
             oPlayer.RandomName(0)
         else:
             oPlayer.RandomName(1)
@@ -544,7 +544,13 @@ def Run():
     nLoop = 1970
     while nLoop > 1:
         sSeason, oRetiredPlayers = Season(oPlayers, oSeasons, oRetiredPlayers, nLoop)
-        oSeasons.append('{} {}'.format(nLoop, sSeason))
+
+        # Find the season end number 1 player.
+        oNumberOne = None
+        for oPlayer in oPlayers:
+            if oPlayer.ranking == 1:
+                oNumberOne = oPlayer
+        oSeasons.append('{} {} ({})'.format(nLoop, sSeason, oNumberOne.name))
         nLoop += 1
 
         # Wait.
