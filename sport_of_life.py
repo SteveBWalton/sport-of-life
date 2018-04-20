@@ -316,9 +316,9 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
         if nCount <= nNumShow:
             if nCount == 1:
                 oPlayer.top_ranking += 1
-            if oPlayer.age >= 50:
+            if oPlayer.age > 45:
                 sColour = modANSI.BOLD_CYAN
-            elif oPlayer.age >= 40:
+            elif oPlayer.age > 35:
                 sColour = modANSI.CYAN
             elif oPlayer.age <= 21:
                 sColour = modANSI.YELLOW
@@ -343,15 +343,15 @@ def UpdateSkill(oPlayers):
     ''' Update the skill of the players. '''
     for oPlayer in oPlayers:
         # Add age related skill.
-        if oPlayer.age < 20:
+        if oPlayer.age <= 20:
             oPlayer.skill += 10
-        elif oPlayer.age < 24:
+        elif oPlayer.age <= 24:
             oPlayer.skill += 5
-        elif oPlayer.age > 40:
+        elif oPlayer.age >= 40:
             oPlayer.skill -= 20
-        elif oPlayer.age > 35:
+        elif oPlayer.age >= 35:
             oPlayer.skill -= 10
-        elif oPlayer.age > 30:
+        elif oPlayer.age >= 30:
             oPlayer.skill -= 2
 
         # Add random skill.
