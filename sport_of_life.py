@@ -71,8 +71,10 @@ def PlayRound(oPlayers, nKeyHome, nKeyAway, nKeyWin, nKeyLose, nNumMatches, nSco
 
 
 
-def PlaySeededTournament(oPlayers):
+def PlaySeededTournament(oPlayers, sTitle):
     ''' Play a tournament with seeded players. '''
+    print('{}{} (Seeded)'.format(' ' * 15, sTitle))
+
     # Sort by pts.
     oPlayers = sorted(oPlayers, key=lambda CPlayer: CPlayer.pts, reverse=True)
 
@@ -163,6 +165,8 @@ def PlaySeededTournament(oPlayers):
 
 def PlayWorldChampionshipTournament(oPlayers):
     ''' Play a world championship tournament. '''
+    print('{}World Championship'.format(' ' * 15))
+
     # Sort by pts.
     oPlayers = sorted(oPlayers, key=lambda CPlayer: CPlayer.pts, reverse=True)
 
@@ -252,8 +256,10 @@ def PlayWorldChampionshipTournament(oPlayers):
 
 
 
-def PlayOpenTournament(oPlayers):
+def PlayOpenTournament(oPlayers, sTitle):
     ''' Play a tournament with all the players. '''
+    print('{}{} (Open)'.format(' ' * 15, sTitle))
+
     for oPlayer in oPlayers:
         oPlayer.round = 1
 
@@ -433,59 +439,62 @@ def ShowWins(oPlayers, oRetiredPlayers):
 
 
 
+def ShowChampions(oSeasons, nThisSeason, sThisSeason, nIndex):
+    ''' Display the previous champions. '''
+    # print('1234 123456789012345678901212345678901234567890121234567890123456789012123456789012345678901212345678901234567890121234567890123456789012')
+    print('{}'.format(modANSI.MAGENTA), end='')
+    print('     World                 China                 German                UK                    Welsh                 Shanghai')
+    print('     Champion              Open                  Masters               Championship          Open                  Masters{}'.format(modANSI.RESET_ALL))
+    for sHistory in oSeasons:
+        print(sHistory)
+    if sThisSeason != '':
+        print('{} {}{}'.format(nThisSeason, ' ' * (22 * nIndex), sThisSeason))
+
+
+
 def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     ''' Execute a season in the sport of life game. '''
-    oWinner = PlayOpenTournament(oPlayers)
+    oWinner = PlayOpenTournament(oPlayers, 'Shanghai Masters')
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}'.format(oWinner.name)
-    for sHistory in oSeasons:
-        print(sHistory)
-    print('{} {}{}'.format(nSeason, ' ' * (22 * 5), sSeason))
+    ShowChampions(oSeasons, nSeason, sSeason, 5)
     oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlaySeededTournament(oPlayers)
+    oWinner = PlayOpenTournament(oPlayers, 'Welsh Open')
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-    for sHistory in oSeasons:
-        print(sHistory)
-    print('{} {}{}'.format(nSeason, ' ' * (22 * 4), sSeason))
+    ShowChampions(oSeasons, nSeason, sSeason, 4)
     oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlayOpenTournament(oPlayers)
+    oWinner = PlaySeededTournament(oPlayers, 'UK Championship')
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-    for sHistory in oSeasons:
-        print(sHistory)
-    print('{} {}{}'.format(nSeason, ' ' * (22 * 3), sSeason))
+    ShowChampions(oSeasons, nSeason, sSeason, 3)
     oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlaySeededTournament(oPlayers)
+    oWinner = PlayOpenTournament(oPlayers, 'German Masters')
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-    for sHistory in oSeasons:
-        print(sHistory)
-    print('{} {}{}'.format(nSeason, ' ' * (22 * 2), sSeason))
+    ShowChampions(oSeasons, nSeason, sSeason, 2)
     oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlayOpenTournament(oPlayers)
+    oWinner = PlaySeededTournament(oPlayers, 'China Open')
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-    for sHistory in oSeasons:
-        print(sHistory)
-    print('{} {}{}'.format(nSeason, ' ' * (22 * 1), sSeason))
+    ShowChampions(oSeasons, nSeason, sSeason, 1)
     oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
@@ -495,9 +504,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     ShowRanking(oPlayers, True, 64)
     time.sleep(10)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-    for sHistory in oSeasons:
-        print(sHistory)
-    print('{} {}'.format(nSeason, sSeason))
+    ShowChampions(oSeasons, nSeason, sSeason, 0)
     oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
@@ -522,7 +529,7 @@ def Run():
     for nLoop in range(64):
         oPlayer = modPlayer.CPlayer(None)
         oPlayer.skill = random.randint(100, 999)
-        oPlayer.age = random.randint(18, 36)
+        oPlayer.age = random.randint(20, 36)
         if nLoop < 62:
             oPlayer.RandomName(0)
         else:
@@ -555,6 +562,7 @@ def Run():
 
         # Wait.
         time.sleep(1)
+
 
 
 if __name__ == '__main__':
