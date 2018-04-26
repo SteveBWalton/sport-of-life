@@ -57,6 +57,7 @@ class CPlayer:
         self.first_win = None
         self.last_win = None
         self.skill_offset = 0
+        self.prize_money = 0
 
 
 
@@ -76,6 +77,7 @@ class CPlayer:
         oRetiredPlayer.age = self.age
         oRetiredPlayer.first_win = self.first_win
         oRetiredPlayer.last_win = self.last_win
+        oRetiredPlayer.prize_money = self.prize_money
 
         return oRetiredPlayer
 
@@ -83,7 +85,7 @@ class CPlayer:
 
     def NameWithRanking(self):
         ''' Returns the name with ranking if top 8. '''
-        if self.ranking > 8:
+        if self.ranking > 16:
             return self.name
         return '{} ({})'.format(self.name, self.ranking)
 

@@ -22,6 +22,7 @@ import modPlayer
 import modANSI
 
 
+
 def PlayMatch(oPlayer1, oPlayer2, nWin):
     ''' Play a match between the specified players. '''
     nScore1 = 0
@@ -72,7 +73,10 @@ def PlayRound(oPlayers, nKeyHome, nKeyAway, nKeyWin, nKeyLose, nNumMatches, nSco
 
 
 def PlaySeededTournament(oPlayers, sTitle):
-    ''' Play a tournament with seeded players. '''
+    '''
+    Play a tournament with seeded players.
+    64 Unseeded players in 2 qualifying rounds.
+     '''
     print('{}{} (Seeded)'.format(' ' * 15, sTitle))
 
     # Sort by pts.
@@ -82,59 +86,62 @@ def PlaySeededTournament(oPlayers, sTitle):
     nCount = 1
     for oPlayer in oPlayers:
         oPlayer.round = nCount
-        if nCount < 9:
+        if nCount < 17:
             nCount = nCount + 1
         # print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.round), end='\n')
 
 
     # Qualifiying.
     print('Qualifying')
-    PlayRound(oPlayers, 9, 9, 10, 0, 24, 5)
+    PlayRound(oPlayers, 17, 17, 18, 0, 32, 5)
+
+    print('Qualifying 2')
+    PlayRound(oPlayers, 18, 18, 19, 0, 16, 5)
 
     # Round One.
     print('Round One')
-    PlayRound(oPlayers, 1, 10, 12, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 12, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 13, -1, 1, 6)
-    PlayRound(oPlayers, 8, 10, 13, -1, 1, 6)
-    PlayRound(oPlayers, 5, 10, 14, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 14, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 15, -1, 1, 6)
-    PlayRound(oPlayers, 4, 10, 15, -1, 1, 6)
-    PlayRound(oPlayers, 3, 10, 16, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 16, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 17, -1, 1, 6)
-    PlayRound(oPlayers, 6, 10, 17, -1, 1, 6)
-    PlayRound(oPlayers, 7, 10, 18, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 18, -1, 1, 6)
-    PlayRound(oPlayers, 10, 10, 19, -1, 1, 6)
-    PlayRound(oPlayers, 2, 10, 19, -1, 1, 6)
+    PlayRound(oPlayers, 1, 19, 20, -1, 1, 6)
+    PlayRound(oPlayers, 16, 19, 20, -1, 1, 6)
+    PlayRound(oPlayers, 9, 19, 21, -1, 1, 6)
+    PlayRound(oPlayers, 8, 19, 21, -1, 1, 6)
+    PlayRound(oPlayers, 5, 19, 22, -1, 1, 6)
+    PlayRound(oPlayers, 11, 19, 22, -1, 1, 6)
+    PlayRound(oPlayers, 13, 19, 23, -1, 1, 6)
+    PlayRound(oPlayers, 4, 19, 23, -1, 1, 6)
+    PlayRound(oPlayers, 3, 19, 24, -1, 1, 6)
+    PlayRound(oPlayers, 14, 19, 24, -1, 1, 6)
+    PlayRound(oPlayers, 12, 19, 25, -1, 1, 6)
+    PlayRound(oPlayers, 6, 19, 25, -1, 1, 6)
+    PlayRound(oPlayers, 7, 19, 26, -1, 1, 6)
+    PlayRound(oPlayers, 10, 19, 26, -1, 1, 6)
+    PlayRound(oPlayers, 15, 19, 27, -1, 1, 6)
+    PlayRound(oPlayers, 2, 19, 27, -1, 1, 6)
 
     # Round Two.
     print('Round Two')
-    PlayRound(oPlayers, 12, 12, 20, -2, 1, 9)
-    PlayRound(oPlayers, 13, 13, 20, -2, 1, 9)
-    PlayRound(oPlayers, 14, 14, 21, -2, 1, 9)
-    PlayRound(oPlayers, 15, 15, 21, -2, 1, 9)
-    PlayRound(oPlayers, 16, 16, 22, -2, 1, 9)
-    PlayRound(oPlayers, 17, 17, 22, -2, 1, 9)
-    PlayRound(oPlayers, 18, 18, 23, -2, 1, 9)
-    PlayRound(oPlayers, 19, 19, 23, -2, 1, 9)
+    PlayRound(oPlayers, 20, 20, 30, -2, 1, 9)
+    PlayRound(oPlayers, 21, 21, 30, -2, 1, 9)
+    PlayRound(oPlayers, 22, 22, 31, -2, 1, 9)
+    PlayRound(oPlayers, 23, 23, 31, -2, 1, 9)
+    PlayRound(oPlayers, 24, 24, 32, -2, 1, 9)
+    PlayRound(oPlayers, 25, 25, 32, -2, 1, 9)
+    PlayRound(oPlayers, 26, 26, 33, -2, 1, 9)
+    PlayRound(oPlayers, 27, 27, 33, -2, 1, 9)
 
     # Quarter Finals.
     print('Quarter Finals')
-    PlayRound(oPlayers, 20, 20, 30, -3, 1, 10)
-    PlayRound(oPlayers, 21, 21, 30, -3, 1, 10)
-    PlayRound(oPlayers, 22, 22, 31, -3, 1, 10)
-    PlayRound(oPlayers, 23, 23, 31, -3, 1, 10)
+    PlayRound(oPlayers, 30, 30, 40, -3, 1, 10)
+    PlayRound(oPlayers, 31, 31, 40, -3, 1, 10)
+    PlayRound(oPlayers, 32, 32, 41, -3, 1, 10)
+    PlayRound(oPlayers, 33, 33, 41, -3, 1, 10)
 
     # Semi Finals.
     print('Semi Finals')
-    PlayRound(oPlayers, 30, 30, 40, -4, 1, 13)
-    PlayRound(oPlayers, 31, 31, 40, -4, 1, 13)
+    PlayRound(oPlayers, 40, 40, 50, -4, 1, 13)
+    PlayRound(oPlayers, 41, 41, 50, -4, 1, 13)
 
     print('Final')
-    PlayRound(oPlayers, 40, 40, -6, -5, 1, 17)
+    PlayRound(oPlayers, 50, 50, -6, -5, 1, 17)
 
     # Allocate ranking points and find the winner.
     oWinner = None
@@ -174,59 +181,61 @@ def PlayWorldChampionshipTournament(oPlayers):
     nCount = 1
     for oPlayer in oPlayers:
         oPlayer.round = nCount
-        if nCount < 9:
+        if nCount < 17:
             nCount = nCount + 1
         # print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.round), end='\n')
 
-
     # Qualifiying.
     print('Qualifying')
-    PlayRound(oPlayers, 9, 9, 10, 0, 24, 10)
+    PlayRound(oPlayers, 17, 17, 18, 0, 32, 5)
+
+    print('Qualifying 2')
+    PlayRound(oPlayers, 18, 18, 19, 0, 16, 5)
 
     # Round One.
     print('Round One')
-    PlayRound(oPlayers, 1, 10, 12, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 12, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 13, -1, 1, 10)
-    PlayRound(oPlayers, 8, 10, 13, -1, 1, 10)
-    PlayRound(oPlayers, 5, 10, 14, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 14, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 15, -1, 1, 10)
-    PlayRound(oPlayers, 4, 10, 15, -1, 1, 10)
-    PlayRound(oPlayers, 3, 10, 16, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 16, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 17, -1, 1, 10)
-    PlayRound(oPlayers, 6, 10, 17, -1, 1, 10)
-    PlayRound(oPlayers, 7, 10, 18, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 18, -1, 1, 10)
-    PlayRound(oPlayers, 10, 10, 19, -1, 1, 10)
-    PlayRound(oPlayers, 2, 10, 19, -1, 1, 10)
+    PlayRound(oPlayers, 1, 19, 20, -1, 1, 6)
+    PlayRound(oPlayers, 16, 19, 20, -1, 1, 6)
+    PlayRound(oPlayers, 9, 19, 21, -1, 1, 6)
+    PlayRound(oPlayers, 8, 19, 21, -1, 1, 6)
+    PlayRound(oPlayers, 5, 19, 22, -1, 1, 6)
+    PlayRound(oPlayers, 11, 19, 22, -1, 1, 6)
+    PlayRound(oPlayers, 13, 19, 23, -1, 1, 6)
+    PlayRound(oPlayers, 4, 19, 23, -1, 1, 6)
+    PlayRound(oPlayers, 3, 19, 24, -1, 1, 6)
+    PlayRound(oPlayers, 14, 19, 24, -1, 1, 6)
+    PlayRound(oPlayers, 12, 19, 25, -1, 1, 6)
+    PlayRound(oPlayers, 6, 19, 25, -1, 1, 6)
+    PlayRound(oPlayers, 7, 19, 26, -1, 1, 6)
+    PlayRound(oPlayers, 10, 19, 26, -1, 1, 6)
+    PlayRound(oPlayers, 15, 19, 27, -1, 1, 6)
+    PlayRound(oPlayers, 2, 19, 27, -1, 1, 6)
 
     # Round Two.
     print('Round Two')
-    PlayRound(oPlayers, 12, 12, 20, -2, 1, 13)
-    PlayRound(oPlayers, 13, 13, 20, -2, 1, 13)
-    PlayRound(oPlayers, 14, 14, 21, -2, 1, 13)
-    PlayRound(oPlayers, 15, 15, 21, -2, 1, 13)
-    PlayRound(oPlayers, 16, 16, 22, -2, 1, 13)
-    PlayRound(oPlayers, 17, 17, 22, -2, 1, 13)
-    PlayRound(oPlayers, 18, 18, 23, -2, 1, 13)
-    PlayRound(oPlayers, 19, 19, 23, -2, 1, 13)
+    PlayRound(oPlayers, 20, 20, 30, -2, 1, 9)
+    PlayRound(oPlayers, 21, 21, 30, -2, 1, 9)
+    PlayRound(oPlayers, 22, 22, 31, -2, 1, 9)
+    PlayRound(oPlayers, 23, 23, 31, -2, 1, 9)
+    PlayRound(oPlayers, 24, 24, 32, -2, 1, 9)
+    PlayRound(oPlayers, 25, 25, 32, -2, 1, 9)
+    PlayRound(oPlayers, 26, 26, 33, -2, 1, 9)
+    PlayRound(oPlayers, 27, 27, 33, -2, 1, 9)
 
     # Quarter Finals.
     print('Quarter Finals')
-    PlayRound(oPlayers, 20, 20, 30, -3, 1, 13)
-    PlayRound(oPlayers, 21, 21, 30, -3, 1, 13)
-    PlayRound(oPlayers, 22, 22, 31, -3, 1, 13)
-    PlayRound(oPlayers, 23, 23, 31, -3, 1, 13)
+    PlayRound(oPlayers, 30, 30, 40, -3, 1, 10)
+    PlayRound(oPlayers, 31, 31, 40, -3, 1, 10)
+    PlayRound(oPlayers, 32, 32, 41, -3, 1, 10)
+    PlayRound(oPlayers, 33, 33, 41, -3, 1, 10)
 
     # Semi Finals.
     print('Semi Finals')
-    PlayRound(oPlayers, 30, 30, 40, -4, 1, 17)
-    PlayRound(oPlayers, 31, 31, 40, -4, 1, 17)
+    PlayRound(oPlayers, 40, 40, 50, -4, 1, 13)
+    PlayRound(oPlayers, 41, 41, 50, -4, 1, 13)
 
     print('Final')
-    PlayRound(oPlayers, 40, 40, -6, -5, 1, 18)
+    PlayRound(oPlayers, 50, 50, -6, -5, 1, 17)
 
     # Allocate ranking points and find the winner.
     oWinner = None
@@ -257,14 +266,26 @@ def PlayWorldChampionshipTournament(oPlayers):
 
 
 def PlayOpenTournament(oPlayers, sTitle):
-    ''' Play a tournament with all the players. '''
+    '''
+    Play a tournament with all the players.
+    Qualifying 1 80 Players 16 matches to get 64 players.
+    Qualifying 2 64 players 32 matches to get 32 players.
+    '''
     print('{}{} (Open)'.format(' ' * 15, sTitle))
 
     for oPlayer in oPlayers:
         oPlayer.round = 1
 
     # Qualifiying.
-    print('Qualifying')
+    print('Qualifying 1')
+    PlayRound(oPlayers, 1, 1, 2, 0, 16, 5)
+
+    # Put the winners back into qualifying.
+    for oPlayer in oPlayers:
+        if oPlayer.round == 2:
+            oPlayer.round = 1
+
+    print('Qualifying 2')
     PlayRound(oPlayers, 1, 1, 2, 0, 32, 5)
 
     # Round One.
@@ -395,7 +416,7 @@ def AddAge(oPlayers, oRetiredPlayers):
     ''' Update the age of the players. '''
     for oPlayer in oPlayers:
         oPlayer.age += 1
-        if oPlayer.ranking > 55 and oPlayer.age > 35:
+        if oPlayer.ranking > 70 and oPlayer.age > 35:
             print('{} has retired, aged {}. '.format(oPlayer.name, oPlayer.age), end='')
             oRetiredPlayer = oPlayer.Retire()
             oRetiredPlayers.append(oRetiredPlayer)
@@ -501,7 +522,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
 
     oWinner = PlayWorldChampionshipTournament(oPlayers)
     ShowWins(oPlayers, oRetiredPlayers)
-    ShowRanking(oPlayers, True, 64)
+    ShowRanking(oPlayers, True, 80)
     time.sleep(10)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
     ShowChampions(oSeasons, nSeason, sSeason, 0)
@@ -523,14 +544,14 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
 def Run():
     ''' Execute the sport of life game. '''
 
-    # Create 64 players.
-    print('64 players join the tour. ', end='')
+    # Create 80 players.
+    print('80 players join the tour. ', end='')
     oPlayers = []
-    for nLoop in range(64):
+    for nLoop in range(80):
         oPlayer = modPlayer.CPlayer(None)
         oPlayer.skill = random.randint(100, 999)
         oPlayer.age = random.randint(20, 36)
-        if nLoop < 62:
+        if nLoop < 100:
             oPlayer.RandomName(0)
         else:
             oPlayer.RandomName(1)
