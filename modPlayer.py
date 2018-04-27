@@ -58,6 +58,7 @@ class CPlayer:
         self.last_win = None
         self.skill_offset = 0
         self.prize_money = 0
+        self.season_money = 0
 
 
 
@@ -105,12 +106,12 @@ class CPlayer:
         ''' Give the player a random name. '''
         if nCulture == 1:
             # Chinese names.
-            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao',    'Junjie', 'Zhang', 'Chen', 'Xu', 'Lyu']
-            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si', 'Haotian']
+            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao',    'Junjie', 'Zhang', 'Chen', 'Xu', 'Lyu',     'Yu',   'Tian',    'Mei',   'Zhao']
+            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si', 'Haotian', 'Delu', 'Pengfei', 'Xiwen', 'Xintong']
         else:
             # English names.
-            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme', 'John',    'Eddie',    'Kirk',    'Cliff',    'Perrie', 'Ricky',   'Jimmy', 'Daniel', 'Tom',  'Nigel', 'Scott', 'Lewis', 'Damon', 'Jim', ]
-            LastNames =  ['Walton', 'Davis', 'Hendry',  'Johnson', 'Lumby',  'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill',  'Dott',   'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans',    'Walden', 'White', 'Wells',  'Ford', 'Bond', 'Donaldson', 'Hamilton', 'Hill', 'Clark']
+            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme', 'John',    'Eddie',    'Kirk',    'Cliff',    'Perrie',  'Ricky',  'Jimmy', 'Daniel', 'Tom',  'Nigel', 'Scott',     'Lewis',    'Damon', 'Jim',   'Sebastian', 'Matthew', 'David',    'Michael', 'Robert',  'James', 'Alan']
+            LastNames =  ['Walton', 'Davis', 'Hendry',  'Johnson', 'Lumby',  'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill',  'Dott',   'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans',    'Walden', 'White', 'Wells',  'Ford', 'Bond',  'Donaldson', 'Hamilton', 'Hill',  'Clark', 'Coe',  'Stevens', 'Coulthard', 'Holt',   'Milkins', 'Whale', 'McManus']
 
         nFirstNameIndex = random.randint(0, len(FirstNames)-1)
         nLastNameIndex = random.randint(0, len(LastNames)-1)

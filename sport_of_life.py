@@ -72,7 +72,7 @@ def PlayRound(oPlayers, nKeyHome, nKeyAway, nKeyWin, nKeyLose, nNumMatches, nSco
 
 
 
-def PlaySeededTournament(oPlayers, sTitle):
+def PlaySeededTournament(oPlayers, sTitle, fPrizeMoney):
     '''
     Play a tournament with seeded players.
     64 Unseeded players in 2 qualifying rounds.
@@ -92,7 +92,7 @@ def PlaySeededTournament(oPlayers, sTitle):
 
 
     # Qualifiying.
-    print('Qualifying')
+    print('Qualifying 1')
     PlayRound(oPlayers, 17, 17, 18, 0, 32, 5)
 
     print('Qualifying 2')
@@ -162,6 +162,12 @@ def PlaySeededTournament(oPlayers, sTitle):
         for nPts in oPlayer.history:
             oPlayer.pts += nPts
 
+        # Prize Money.
+        fMoney = fPrizeMoney * (nPts / 32)
+        oPlayer.prize_money += fMoney
+        oPlayer.season_money += fMoney
+
+
     # Wait.
     time.sleep(1)
 
@@ -170,7 +176,7 @@ def PlaySeededTournament(oPlayers, sTitle):
 
 
 
-def PlayWorldChampionshipTournament(oPlayers):
+def PlayWorldChampionshipTournament(oPlayers, fPrizeMoney):
     ''' Play a world championship tournament. '''
     print('{}World Championship'.format(' ' * 15))
 
@@ -186,56 +192,56 @@ def PlayWorldChampionshipTournament(oPlayers):
         # print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.round), end='\n')
 
     # Qualifiying.
-    print('Qualifying')
-    PlayRound(oPlayers, 17, 17, 18, 0, 32, 5)
+    print('Qualifying 1')
+    PlayRound(oPlayers, 17, 17, 18, 0, 32, 10)
 
     print('Qualifying 2')
-    PlayRound(oPlayers, 18, 18, 19, 0, 16, 5)
+    PlayRound(oPlayers, 18, 18, 19, 0, 16, 10)
 
     # Round One.
     print('Round One')
-    PlayRound(oPlayers, 1, 19, 20, -1, 1, 6)
-    PlayRound(oPlayers, 16, 19, 20, -1, 1, 6)
-    PlayRound(oPlayers, 9, 19, 21, -1, 1, 6)
-    PlayRound(oPlayers, 8, 19, 21, -1, 1, 6)
-    PlayRound(oPlayers, 5, 19, 22, -1, 1, 6)
-    PlayRound(oPlayers, 11, 19, 22, -1, 1, 6)
-    PlayRound(oPlayers, 13, 19, 23, -1, 1, 6)
-    PlayRound(oPlayers, 4, 19, 23, -1, 1, 6)
-    PlayRound(oPlayers, 3, 19, 24, -1, 1, 6)
-    PlayRound(oPlayers, 14, 19, 24, -1, 1, 6)
-    PlayRound(oPlayers, 12, 19, 25, -1, 1, 6)
-    PlayRound(oPlayers, 6, 19, 25, -1, 1, 6)
-    PlayRound(oPlayers, 7, 19, 26, -1, 1, 6)
-    PlayRound(oPlayers, 10, 19, 26, -1, 1, 6)
-    PlayRound(oPlayers, 15, 19, 27, -1, 1, 6)
-    PlayRound(oPlayers, 2, 19, 27, -1, 1, 6)
+    PlayRound(oPlayers, 1, 19, 20, -1, 1, 10)
+    PlayRound(oPlayers, 16, 19, 20, -1, 1, 10)
+    PlayRound(oPlayers, 9, 19, 21, -1, 1, 10)
+    PlayRound(oPlayers, 8, 19, 21, -1, 1, 10)
+    PlayRound(oPlayers, 5, 19, 22, -1, 1, 10)
+    PlayRound(oPlayers, 11, 19, 22, -1, 1, 10)
+    PlayRound(oPlayers, 13, 19, 23, -1, 1, 10)
+    PlayRound(oPlayers, 4, 19, 23, -1, 1, 10)
+    PlayRound(oPlayers, 3, 19, 24, -1, 1, 10)
+    PlayRound(oPlayers, 14, 19, 24, -1, 1, 10)
+    PlayRound(oPlayers, 12, 19, 25, -1, 1, 10)
+    PlayRound(oPlayers, 6, 19, 25, -1, 1, 10)
+    PlayRound(oPlayers, 7, 19, 26, -1, 1, 10)
+    PlayRound(oPlayers, 10, 19, 26, -1, 1, 10)
+    PlayRound(oPlayers, 15, 19, 27, -1, 1, 10)
+    PlayRound(oPlayers, 2, 19, 27, -1, 1, 10)
 
     # Round Two.
     print('Round Two')
-    PlayRound(oPlayers, 20, 20, 30, -2, 1, 9)
-    PlayRound(oPlayers, 21, 21, 30, -2, 1, 9)
-    PlayRound(oPlayers, 22, 22, 31, -2, 1, 9)
-    PlayRound(oPlayers, 23, 23, 31, -2, 1, 9)
-    PlayRound(oPlayers, 24, 24, 32, -2, 1, 9)
-    PlayRound(oPlayers, 25, 25, 32, -2, 1, 9)
-    PlayRound(oPlayers, 26, 26, 33, -2, 1, 9)
-    PlayRound(oPlayers, 27, 27, 33, -2, 1, 9)
+    PlayRound(oPlayers, 20, 20, 30, -2, 1, 13)
+    PlayRound(oPlayers, 21, 21, 30, -2, 1, 13)
+    PlayRound(oPlayers, 22, 22, 31, -2, 1, 13)
+    PlayRound(oPlayers, 23, 23, 31, -2, 1, 13)
+    PlayRound(oPlayers, 24, 24, 32, -2, 1, 13)
+    PlayRound(oPlayers, 25, 25, 32, -2, 1, 13)
+    PlayRound(oPlayers, 26, 26, 33, -2, 1, 13)
+    PlayRound(oPlayers, 27, 27, 33, -2, 1, 13)
 
     # Quarter Finals.
     print('Quarter Finals')
-    PlayRound(oPlayers, 30, 30, 40, -3, 1, 10)
-    PlayRound(oPlayers, 31, 31, 40, -3, 1, 10)
-    PlayRound(oPlayers, 32, 32, 41, -3, 1, 10)
-    PlayRound(oPlayers, 33, 33, 41, -3, 1, 10)
+    PlayRound(oPlayers, 30, 30, 40, -3, 1, 13)
+    PlayRound(oPlayers, 31, 31, 40, -3, 1, 13)
+    PlayRound(oPlayers, 32, 32, 41, -3, 1, 13)
+    PlayRound(oPlayers, 33, 33, 41, -3, 1, 13)
 
     # Semi Finals.
     print('Semi Finals')
-    PlayRound(oPlayers, 40, 40, 50, -4, 1, 13)
-    PlayRound(oPlayers, 41, 41, 50, -4, 1, 13)
+    PlayRound(oPlayers, 40, 40, 50, -4, 1, 17)
+    PlayRound(oPlayers, 41, 41, 50, -4, 1, 17)
 
     print('Final')
-    PlayRound(oPlayers, 50, 50, -6, -5, 1, 17)
+    PlayRound(oPlayers, 50, 50, -6, -5, 1, 18)
 
     # Allocate ranking points and find the winner.
     oWinner = None
@@ -251,11 +257,17 @@ def PlayWorldChampionshipTournament(oPlayers):
 
         nPts = [0, 2, 4, 8, 16, 32, 64][-oPlayer.round]
         oPlayer.history.append(nPts)
+
         while len(oPlayer.history) > 12:
             del oPlayer.history[0]
         oPlayer.pts = 0
         for nPts in oPlayer.history:
             oPlayer.pts += nPts
+
+        # Prize Money.
+        fMoney = fPrizeMoney * (nPts / 64)
+        oPlayer.prize_money += fMoney
+        oPlayer.season_money += fMoney
 
     # Wait.
     time.sleep(1)
@@ -265,7 +277,7 @@ def PlayWorldChampionshipTournament(oPlayers):
 
 
 
-def PlayOpenTournament(oPlayers, sTitle):
+def PlayOpenTournament(oPlayers, sTitle, fPrizeMoney):
     '''
     Play a tournament with all the players.
     Qualifying 1 80 Players 16 matches to get 64 players.
@@ -323,6 +335,11 @@ def PlayOpenTournament(oPlayers, sTitle):
         for nPts in oPlayer.history:
             oPlayer.pts += nPts
 
+        # Prize Money.
+        fMoney = fPrizeMoney * (nPts / 32)
+        oPlayer.prize_money += fMoney
+        oPlayer.season_money += fMoney
+
     # Wait.
     time.sleep(1)
 
@@ -352,6 +369,7 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
             else:
                 sColour = ''
             print('{:>5} {}{:<22}{}{:>4}'.format(nCount, sColour, oPlayer.NameWithRanking(), modANSI.RESET_ALL, oPlayer.pts), end='')
+            print('{:>12,.2f}'.format(oPlayer.season_money), end='')
             for nPts in oPlayer.history:
                 print('{:>3}'.format(nPts), end='')
 
@@ -447,10 +465,10 @@ def ShowWins(oPlayers, oRetiredPlayers):
     for oPlayer in oPlayers:
         if oPlayer.wins > 0 or oPlayer.runner_up > 0:
             if oPlayer.ranking > 500:
-                print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6), end='')
+                print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
 
             else:
-                print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6), end='')
+                print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
 
             print()
         nCount = nCount + 1
@@ -473,9 +491,14 @@ def ShowChampions(oSeasons, nThisSeason, sThisSeason, nIndex):
 
 
 
-def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
+def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason, fPrizeMoney):
     ''' Execute a season in the sport of life game. '''
-    oWinner = PlayOpenTournament(oPlayers, 'Shanghai Masters')
+    # Reset for the season.
+    for oPlayer in oPlayers:
+        oPlayer.season_money = 0
+
+    # Play the season.
+    oWinner = PlayOpenTournament(oPlayers, 'Shanghai Masters', 0.3 * fPrizeMoney)
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}'.format(oWinner.name)
@@ -484,7 +507,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlayOpenTournament(oPlayers, 'Welsh Open')
+    oWinner = PlayOpenTournament(oPlayers, 'Welsh Open', 0.3 * fPrizeMoney)
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
@@ -493,7 +516,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlaySeededTournament(oPlayers, 'UK Championship')
+    oWinner = PlaySeededTournament(oPlayers, 'UK Championship', 0.6 * fPrizeMoney)
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
@@ -502,7 +525,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlayOpenTournament(oPlayers, 'German Masters')
+    oWinner = PlayOpenTournament(oPlayers, 'German Masters', 0.3 * fPrizeMoney)
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
@@ -511,7 +534,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlaySeededTournament(oPlayers, 'China Open')
+    oWinner = PlaySeededTournament(oPlayers, 'China Open', 0.6 * fPrizeMoney)
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 16)
     sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
@@ -520,7 +543,7 @@ def Season(oPlayers, oSeasons, oRetiredPlayers, nSeason):
     oWinner.last_win = nSeason
     UpdateSkill(oPlayers)
 
-    oWinner = PlayWorldChampionshipTournament(oPlayers)
+    oWinner = PlayWorldChampionshipTournament(oPlayers, fPrizeMoney)
     ShowWins(oPlayers, oRetiredPlayers)
     ShowRanking(oPlayers, True, 80)
     time.sleep(10)
@@ -570,15 +593,22 @@ def Run():
     oRetiredPlayers = []
     oSeasons = []
     nLoop = 1970
+    fPrizeMoney = 200000.0
     while nLoop > 1:
-        sSeason, oRetiredPlayers = Season(oPlayers, oSeasons, oRetiredPlayers, nLoop)
+        sSeason, oRetiredPlayers = Season(oPlayers, oSeasons, oRetiredPlayers, nLoop, fPrizeMoney)
 
         # Find the season end number 1 player.
         oNumberOne = None
+        oTopMoney = oPlayers[0]
         for oPlayer in oPlayers:
             if oPlayer.ranking == 1:
                 oNumberOne = oPlayer
-        oSeasons.append('{} {} ({})'.format(nLoop, sSeason, oNumberOne.name))
+            if oPlayer.season_money > oTopMoney.season_money:
+                oTopMoney = oPlayer
+
+        oSeasons.append('{} {} {:>4} {:<22} {:>12,.2f} {}'.format(nLoop, sSeason, oNumberOne.pts, oNumberOne.name, oTopMoney.season_money, oTopMoney.name))
+
+        fPrizeMoney *= 1.05
         nLoop += 1
 
         # Wait.
