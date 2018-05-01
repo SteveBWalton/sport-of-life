@@ -163,10 +163,10 @@ def PlaySeededTournament(oPlayers, sTitle, fPrizeMoney):
             oPlayer.pts += nPts
 
         # Prize Money.
-        fMoney = fPrizeMoney * (nPts / 32)
+        nMoney = [0, 13, 28, 42, 56, 75, 100][-oPlayer.round]
+        fMoney = fPrizeMoney * (nMoney / 100)
         oPlayer.prize_money += fMoney
         oPlayer.season_money += fMoney
-
 
     # Wait.
     time.sleep(1)
@@ -265,7 +265,8 @@ def PlayWorldChampionshipTournament(oPlayers, fPrizeMoney):
             oPlayer.pts += nPts
 
         # Prize Money.
-        fMoney = fPrizeMoney * (nPts / 64)
+        nMoney = [0, 13, 28, 42, 56, 75, 100][-oPlayer.round]
+        fMoney = fPrizeMoney * (nMoney / 100)
         oPlayer.prize_money += fMoney
         oPlayer.season_money += fMoney
 
@@ -336,7 +337,8 @@ def PlayOpenTournament(oPlayers, sTitle, fPrizeMoney):
             oPlayer.pts += nPts
 
         # Prize Money.
-        fMoney = fPrizeMoney * (nPts / 32)
+        nMoney = [0, 13, 28, 42, 56, 75, 100][-oPlayer.round]
+        fMoney = fPrizeMoney * (nMoney / 100)
         oPlayer.prize_money += fMoney
         oPlayer.season_money += fMoney
 
@@ -369,7 +371,7 @@ def ShowRanking(oPlayers, bUpdate, nNumShow):
             else:
                 sColour = ''
             print('{:>5} {}{:<22}{}{:>4}'.format(nCount, sColour, oPlayer.NameWithRanking(), modANSI.RESET_ALL, oPlayer.pts), end='')
-            print('{:>12,.2f}'.format(oPlayer.season_money), end='')
+            print('{:>13,.2f}'.format(oPlayer.season_money), end='')
             for nPts in oPlayer.history:
                 print('{:>3}'.format(nPts), end='')
 
@@ -401,7 +403,7 @@ def UpdateSkill(oPlayers):
             oPlayer.skill -= 2
 
         # Add random skill.
-        oPlayer.skill += random.randint(-10, 10)
+        oPlayer.skill += random.randint(-20, 20)
 
         # Reset the short term shifts.
         if oPlayer.skill_offset != 0:
@@ -414,16 +416,17 @@ def UpdateSkill(oPlayers):
                 oPlayer.skill_offset += 100
                 print('{} is boosted ({}, {})'.format(oPlayer.NameWithRanking(), oPlayer.skill, oPlayer.skill_offset))
 
-
         if random.randint(0, 1000) == 0:
            print('{} has a boost.'.format(oPlayer.NameWithRanking()))
-           oPlayer.skill += 500
-           oPlayer.skill_offset -= 500
+           oPlayer.skill += 600
+           oPlayer.skill_offset -= 600
         if random.randint(0, 100) == 0:
             print('{} has an injury.'.format(oPlayer.NameWithRanking()))
             oPlayer.skill -= 500
             oPlayer.skill_offset += 500
 
+        if oPlayer.skill > 999:
+            oPlayer.skill -= 1
 
         if oPlayer.skill < 100:
             oPlayer.skill = 100
@@ -440,7 +443,7 @@ def AddAge(oPlayers, oRetiredPlayers):
             oRetiredPlayers.append(oRetiredPlayer)
 
             oPlayer.Reset()
-            oPlayer.skill = oPlayer.skill = random.randint(100, 899)
+            oPlayer.skill = random.randint(50, 450) + random.randint(50, 450)
             nCulture = 0
             if random.randint(0, 6) == 4:
                 nCulture = 1
@@ -465,10 +468,10 @@ def ShowWins(oPlayers, oRetiredPlayers):
     for oPlayer in oPlayers:
         if oPlayer.wins > 0 or oPlayer.runner_up > 0:
             if oPlayer.ranking > 500:
-                print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
+                print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
 
             else:
-                print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
+                print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
 
             print()
         nCount = nCount + 1
