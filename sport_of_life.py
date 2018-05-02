@@ -391,6 +391,9 @@ class CGame:
                     sColour = modANSI.YELLOW
                 else:
                     sColour = ''
+                if oPlayer.round == -6:
+                    # Winner of last tournament.
+                    sColour = modANSI.RED
                 print('{:>5} {}{:<22}{}{:>4}'.format(nCount, sColour, oPlayer.NameWithRanking(), modANSI.RESET_ALL, oPlayer.pts), end='')
                 print('{:>13,.2f}'.format(oPlayer.season_money), end='')
                 for nPts in oPlayer.history:
@@ -492,7 +495,11 @@ class CGame:
                     print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
 
                 else:
-                    print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
+                    if oPlayer.round == -6:
+                        # Winner of last tournament.
+                        print('{:>5} {}{:<28}{}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, modANSI.RED, oPlayer.NameWithRanking(), modANSI.RESET_ALL, oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
+                    else:
+                        print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
 
                 print()
             nCount = nCount + 1
