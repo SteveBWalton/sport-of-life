@@ -4,10 +4,11 @@
 '''
 Module to provide the BBC Basic function INKEY.
 Scan for a keyboard button press but do not block if no key is available.
+Under Windows.
+    This works under winpty ( but colours do not work in winpty).
+    This does not work under minitty.
 '''
 
-import tty
-import termios
 import sys
 import _thread
 import time
@@ -15,9 +16,14 @@ import time
 
 try:
     # Try to import Windows version.
-    from msvcrt import getch
+    print('Try to import Windows version')
+    import msvcrt
+    # from msvcrt import getwch, kbhit
+    print('Using Windows getwch().')
 except ImportError:
     # Define non-Windows version.
+    import tty
+    import termios
     def getch():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
@@ -41,14 +47,22 @@ class CInKey:
 
     def __init__(self):
         ''' Class constructor. '''
+        # print('CInKey class constructor.')
         self.sLastKey = None
+        # print('_thread.start_new_thread.')
         _thread.start_new_thread(self._keypress, ())
+        # print('CInKey class constructor finished.')
 
-
+        
 
     def _keypress(self):
         ''' Fetch the last character into a buffer. '''
-        self.sLastKey = getch()
+        # print('_keypress().start')
+        # if msvcrt.kbhit():
+        # print('_keypress().start')
+        # This does not work under minitty.
+        self.sLastKey = msvcrt.getwch()
+        # print('_keypress().finish')
 
 
 
@@ -65,17 +79,19 @@ class CInKey:
 
 
 def main():
+    # print('Hello from modInKey.py')
     oInKey = CInKey()
+    # print('CInkey object created.')
     while True:
         sCharacter = oInKey.InKey()
         if sCharacter == None:
             pass
-            # print('No Key pressed.')
+            print('No Key pressed.')
         else:
             print('"{}" key pressed.'.format(sCharacter))
             if sCharacter == 'q' or sCharacter == '\x1b':  # x1b is ESC
                 break
-        time.sleep(.5)
+        time.sleep(1)
 
 
 
