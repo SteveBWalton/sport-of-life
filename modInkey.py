@@ -17,14 +17,14 @@ import time
 try:
     # Try to import Windows version.
     print('Try to import Windows version')
-    import msvcrt
-    # from msvcrt import getwch, kbhit
+    # import msvcrt
+    from msvcrt import getwch # , kbhit
     print('Using Windows getwch().')
 except ImportError:
     # Define non-Windows version.
     import tty
     import termios
-    def getch():
+    def getwch():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -61,7 +61,7 @@ class CInKey:
         # if msvcrt.kbhit():
         # print('_keypress().start')
         # This does not work under minitty.
-        self.sLastKey = msvcrt.getwch()
+        self.sLastKey = getwch()
         # print('_keypress().finish')
 
 
