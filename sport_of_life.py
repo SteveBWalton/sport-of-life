@@ -23,8 +23,10 @@ import modANSI
 import modInkey
 
 
+
 class CGame:
     ''' Class to represent the game.'''
+
 
 
     def __init__(self):
@@ -633,7 +635,7 @@ class CGame:
 
         oRetiredPlayers = []
         oSeasons = []
-        nLoop = 1970
+        nLoop = 1968
         fPrizeMoney = 200000.0
         self.exit_game = False
         while not self.exit_game:
