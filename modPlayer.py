@@ -102,16 +102,23 @@ class CPlayer:
 
 
 
-    def RandomName(self, nCulture):
-        ''' Give the player a random name. '''
+    def _GetNames(self, nCulture):
+        ''' Return the list of possible first names and last names in the specified culture. '''
         if nCulture == 1:
             # Chinese names.
-            FirstNames = ['Ding',   'Marco', 'Liang', 'Yan',     'Xiao',    'Li',   'Zhou',    'Cao',    'Junjie', 'Zhang', 'Chen', 'Xu', 'Lyu',     'Yu',   'Tian',    'Mei',   'Zhao']
-            LastNames =  ['Junhui', 'Fu',    'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si', 'Haotian', 'Delu', 'Pengfei', 'Xiwen', 'Xintong']
+            FirstNames = ['Ding', 'Marco', 'Liang', 'Yan', 'Xiao', 'Li', 'Zhou', 'Cao', 'Junjie', 'Zhang', 'Chen', 'Xu', 'Lyu', 'Yu', 'Tian', 'Mei', 'Zhao']
+            LastNames =  ['Junhui', 'Fu', 'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si', 'Haotian', 'Delu', 'Pengfei', 'Xiwen', 'Xintong']
         else:
             # English names.
-            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe',     'Darren', 'Ronnie',      'Mark',     'Alex',    'Shaun', 'Judd', 'Paul',   'Andrew',  'Ray',     'Kyren',  'Neil',      'Barry',   'Stuart',  'Anthony', 'Graeme', 'John',    'Eddie',    'Kirk',    'Cliff',    'Perrie',  'Ricky',  'Jimmy', 'Daniel', 'Tom',  'Nigel', 'Scott',     'Lewis',    'Damon', 'Jim',   'Sebastian', 'Matthew', 'David',    'Michael', 'Robert',  'James', 'Alan']
-            LastNames =  ['Walton', 'Davis', 'Hendry',  'Johnson', 'Lumby',  'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill',  'Dott',   'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans',    'Walden', 'White', 'Wells',  'Ford', 'Bond',  'Donaldson', 'Hamilton', 'Hill',  'Clark', 'Coe',  'Stevens', 'Coulthard', 'Holt',   'Milkins', 'Whale', 'McManus']
+            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe', 'Darren', 'Ronnie', 'Mark', 'Alex', 'Shaun', 'Judd', 'Paul', 'Andrew', 'Ray', 'Kyren', 'Neil', 'Barry', 'Stuart', 'Anthony', 'Graeme', 'John', 'Eddie', 'Kirk', 'Cliff', 'Perrie', 'Ricky', 'Jimmy', 'Daniel', 'Tom', 'Nigel', 'Scott', 'Lewis', 'Damon', 'Jim', 'Sebastian', 'Matthew', 'David', 'Michael', 'Robert', 'James', 'Alan', 'Harry']
+            LastNames =  ['Walton', 'Davis', 'Hendry', 'Johnson', 'Lumby', 'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill', 'Dott', 'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans', 'Walden', 'White', 'Wells', 'Ford', 'Bond', 'Donaldson', 'Hamilton', 'Hill', 'Clark', 'Coe',  'Stevens', 'Coulthard', 'Holt', 'Milkins', 'Whale', 'McManus', 'Kane']
+        return FirstNames, LastNames
+
+
+
+    def RandomName(self, nCulture):
+        ''' Give the player a random name. '''
+        FirstNames, LastNames = self._GetNames(nCulture)
 
         nFirstNameIndex = random.randint(0, len(FirstNames)-1)
         nLastNameIndex = random.randint(0, len(LastNames)-1)

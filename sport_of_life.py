@@ -20,7 +20,6 @@ import random
 # Application Libraries.
 import modPlayer
 import modANSI
-import modInkey
 
 
 
@@ -608,7 +607,9 @@ class CGame:
     def Run(self):
         ''' Execute the sport of life game. '''
         # Create a keyboard scan.
+        import modInkey
         self.oKeyboard = modInkey.CInKey()
+        self.exit_game = False
 
         # Create 80 players.
         print('80 players join the tour. ', end='')
@@ -637,7 +638,6 @@ class CGame:
         oSeasons = []
         nLoop = 1968
         fPrizeMoney = 200000.0
-        self.exit_game = False
         while not self.exit_game:
             sSeason, oRetiredPlayers = self.Season(oPlayers, oSeasons, oRetiredPlayers, nLoop, fPrizeMoney)
 
@@ -657,6 +657,9 @@ class CGame:
 
             # Wait.
             time.sleep(1)
+
+        # Stop checking the keyboard.
+        self.oKeyboard.Close()
 
 
 
@@ -686,4 +689,8 @@ if __name__ == '__main__':
     oGame = CGame()
     oGame.Run()
 
-    print('Goodbye from the \033[1;31mSport Of Life\033[0;m program.')
+    print('Goodbye from the {}Sport Of Life{} program.'.format(modANSI.RED, modANSI.RESET_ALL))
+
+    # Having a problem with modInKey not restoring the echo flag to the terminal.
+    # Better to get modInKey working and remove this line.
+    # os.system('stty echo')
