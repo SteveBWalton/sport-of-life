@@ -667,12 +667,48 @@ if __name__ == '__main__':
     # Process the command line arguments.
     # This might end the program (--help).
     oParse = argparse.ArgumentParser(prog='sport_of_life', description='Little game to run under Linux and Windows.')
+    oParse.add_argument('-n', '--names', help='Test the player names.', action='store_true')
     oArgs = oParse.parse_args()
 
     # Welcome message.
     print('{}Sport Of Life{} by Steve Walton.'.format(modANSI.RED, modANSI.RESET_ALL))
     print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
+
+    bRunProgram = True
+    if oArgs.names:
+        print('Test the player names.')
+        bRunProgram = False
+        oPlayer = modPlayer.CPlayer(None)
+        for nCulture in [0, 1]:
+            ExistingFirstNames = []
+            ExistingLastNames = []
+            FirstNames, LastNames = oPlayer._GetNames(nCulture)
+            nNumNames = len(FirstNames)
+            if len(LastNames) > nNumNames:
+                nNumNames = len(LastNames)
+            for nIndex in range(nNumNames):
+                bFirstName = True
+                if nIndex < len(FirstNames):
+                    sFirstName = FirstNames[nIndex]
+                    if sFirstName in ExistingFirstNames:
+                        bFirstName = False
+                    else:
+                        ExistingFirstNames.append(sFirstName)
+                else:
+                    sFirstName = ''
+                bLastName = True
+                if nIndex < len(LastNames):
+                    sLastName = LastNames[nIndex]
+                    if sLastName in ExistingLastNames:
+                        bLastName = False
+                    else:
+                        ExistingLastNames.append(sLastName)
+                else:
+                    sLastName = ''
+
+                print('{} {} {} {}'.format(sFirstName, sLastName, 'OK' if bFirstName else 'Error', 'OK' if bLastName else 'Error'))
+
 
     #for nCount in range(10):
     #    # This works on Windows but not in IDLE.
@@ -685,9 +721,10 @@ if __name__ == '__main__':
     #    # Wait for a second.
     #    time.sleep(1)
 
-    # Main loop.
-    oGame = CGame()
-    oGame.Run()
+    if bRunProgram:
+        # Main loop.
+        oGame = CGame()
+        oGame.Run()
 
     print('Goodbye from the {}Sport Of Life{} program.'.format(modANSI.RED, modANSI.RESET_ALL))
 
