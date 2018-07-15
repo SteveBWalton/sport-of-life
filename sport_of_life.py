@@ -112,14 +112,14 @@ class CGame:
 
 
         # Qualifiying.
-        print('Qualifying 1')
+        print('{} Qualifying 1'.format(sTitle))
         self.PlayRound(oPlayers, 17, 17, 18, 0, 32, 5)
 
-        print('Qualifying 2')
+        print('{} Qualifying 2'.format(sTitle))
         self.PlayRound(oPlayers, 18, 18, 19, 0, 16, 5)
 
         # Round One.
-        print('Round One')
+        print('{} Round One'.format(sTitle))
         self.PlayRound(oPlayers, 1, 19, 20, -1, 1, 6)
         self.PlayRound(oPlayers, 16, 19, 20, -1, 1, 6)
         self.PlayRound(oPlayers, 9, 19, 21, -1, 1, 6)
@@ -138,7 +138,7 @@ class CGame:
         self.PlayRound(oPlayers, 2, 19, 27, -1, 1, 6)
 
         # Round Two.
-        print('Round Two')
+        print('{} Round Two'.format(sTitle))
         self.PlayRound(oPlayers, 20, 20, 30, -2, 1, 9)
         self.PlayRound(oPlayers, 21, 21, 30, -2, 1, 9)
         self.PlayRound(oPlayers, 22, 22, 31, -2, 1, 9)
@@ -149,18 +149,18 @@ class CGame:
         self.PlayRound(oPlayers, 27, 27, 33, -2, 1, 9)
 
         # Quarter Finals.
-        print('Quarter Finals')
+        print('{} Quarter Finals'.format(sTitle))
         self.PlayRound(oPlayers, 30, 30, 40, -3, 1, 10)
         self.PlayRound(oPlayers, 31, 31, 40, -3, 1, 10)
         self.PlayRound(oPlayers, 32, 32, 41, -3, 1, 10)
         self.PlayRound(oPlayers, 33, 33, 41, -3, 1, 10)
 
         # Semi Finals.
-        print('Semi Finals')
+        print('{} Semi Finals'.format(sTitle))
         self.PlayRound(oPlayers, 40, 40, 50, -4, 1, 13)
         self.PlayRound(oPlayers, 41, 41, 50, -4, 1, 13)
 
-        print('Final')
+        print('{} Final'.format(sTitle))
         self.PlayRound(oPlayers, 50, 50, -6, -5, 1, 17)
 
         # Allocate ranking points and find the winner.
@@ -213,14 +213,14 @@ class CGame:
             # print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.round), end='\n')
 
         # Qualifiying.
-        print('Qualifying 1')
+        print('World Championship Qualifying 1')
         self.PlayRound(oPlayers, 17, 17, 18, 0, 32, 10)
 
-        print('Qualifying 2')
+        print('World Championship Qualifying 2')
         self.PlayRound(oPlayers, 18, 18, 19, 0, 16, 10)
 
         # Round One.
-        print('Round One')
+        print('World Championship Round One')
         self.PlayRound(oPlayers, 1, 19, 20, -1, 1, 10)
         self.PlayRound(oPlayers, 16, 19, 20, -1, 1, 10)
         self.PlayRound(oPlayers, 9, 19, 21, -1, 1, 10)
@@ -239,7 +239,7 @@ class CGame:
         self.PlayRound(oPlayers, 2, 19, 27, -1, 1, 10)
 
         # Round Two.
-        print('Round Two')
+        print('World Championship Round Two')
         self.PlayRound(oPlayers, 20, 20, 30, -2, 1, 13)
         self.PlayRound(oPlayers, 21, 21, 30, -2, 1, 13)
         self.PlayRound(oPlayers, 22, 22, 31, -2, 1, 13)
@@ -250,18 +250,18 @@ class CGame:
         self.PlayRound(oPlayers, 27, 27, 33, -2, 1, 13)
 
         # Quarter Finals.
-        print('Quarter Finals')
+        print('World Championship Quarter Finals')
         self.PlayRound(oPlayers, 30, 30, 40, -3, 1, 13)
         self.PlayRound(oPlayers, 31, 31, 40, -3, 1, 13)
         self.PlayRound(oPlayers, 32, 32, 41, -3, 1, 13)
         self.PlayRound(oPlayers, 33, 33, 41, -3, 1, 13)
 
         # Semi Finals.
-        print('Semi Finals')
+        print('World Championship Semi Finals')
         self.PlayRound(oPlayers, 40, 40, 50, -4, 1, 17)
         self.PlayRound(oPlayers, 41, 41, 50, -4, 1, 17)
 
-        print('Final')
+        print('World Championship Final')
         self.PlayRound(oPlayers, 50, 50, -6, -5, 1, 18)
 
         # Allocate ranking points and find the winner.
@@ -312,7 +312,7 @@ class CGame:
             oPlayer.round = 1
 
         # Qualifiying.
-        print('Qualifying 1')
+        print('{} Qualifying 1'.format(sTitle))
         self.PlayRound(oPlayers, 1, 1, 2, 0, 16, 5)
 
         # Put the winners back into qualifying.
@@ -320,26 +320,26 @@ class CGame:
             if oPlayer.round == 2:
                 oPlayer.round = 1
 
-        print('Qualifying 2')
+        print('{} Qualifying 2'.format(sTitle))
         self.PlayRound(oPlayers, 1, 1, 2, 0, 32, 5)
 
         # Round One.
-        print('Round One')
+        print('{} Round One'.format(sTitle))
         self.PlayRound(oPlayers, 2, 2, 3, -1, 16, 6)
 
         # Round Two.
-        print('Round Two')
+        print('{} Round Two'.format(sTitle))
         self.PlayRound(oPlayers, 3, 3, 4, -2, 8, 6)
 
         # Quarter Finals.
-        print('Quarter Finals')
+        print('{} Quarter Finals'.format(sTitle))
         self.PlayRound(oPlayers, 4, 4, 5, -3, 4, 6)
 
         # Semi Finals.
-        print('Semi Finals')
+        print('{} Semi Finals'.format(sTitle))
         self.PlayRound(oPlayers, 5, 5, 6, -4, 2, 9)
 
-        print('Final')
+        print('{} Final'.format(sTitle))
         self.PlayRound(oPlayers, 6, 6, -6, -5, 1, 10)
 
         # Allocate ranking points and find the winner.
