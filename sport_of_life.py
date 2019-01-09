@@ -671,7 +671,8 @@ if __name__ == '__main__':
     oArgs = oParse.parse_args()
 
     # Welcome message.
-    print('{}Sport Of Life{} by Steve Walton.'.format(modANSI.RED, modANSI.RESET_ALL))
+    print('{}Sport Of Life{} by Steve Walton 2018-2019.'.format(modANSI.RED, modANSI.RESET_ALL))
+    exit
     print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
 

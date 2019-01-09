@@ -110,8 +110,8 @@ class CPlayer:
             LastNames =  ['Junhui', 'Fu', 'Wenbo', 'Bingtao', 'Guodong', 'Hang', 'Yuelong', 'Yupeng', 'Wang',   'Anda',  'Zhe',  'Si', 'Haotian', 'Delu', 'Pengfei', 'Xiwen', 'Xintong']
         else:
             # English names.
-            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe', 'Darren', 'Ronnie', 'Mark', 'Alex', 'Shaun', 'Judd', 'Paul', 'Andrew', 'Ray', 'Kyren', 'Neil', 'Barry', 'Stuart', 'Anthony', 'Graeme', 'John', 'Eddie', 'Kirk', 'Cliff', 'Perrie', 'Ricky', 'Jimmy', 'Daniel', 'Tom', 'Nigel', 'Scott', 'Lewis', 'Damon', 'Jim', 'Sebastian', 'Gareth', 'David', 'Michael', 'Robert', 'James', 'Alan', 'Harry', 'Sterling', 'Matthew']
-            LastNames =  ['Walton', 'Davis', 'Hendry', 'Johnson', 'Lumby', 'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill', 'Dott', 'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans', 'Walden', 'White', 'Wells', 'Ford', 'Bond', 'Donaldson', 'Hamilton', 'Hill', 'Clark', 'Coe',  'Southgate', 'Coulthard', 'Holt', 'Milkins', 'Whale', 'McManus', 'Kane', 'Moss', 'Osman']
+            FirstNames = ['Steve',  'Fred',  'Stephen', 'Joe', 'Darren', 'Ronnie', 'Mark', 'Alex', 'Shaun', 'Judd', 'Paul', 'Andrew', 'Ray', 'Kyren', 'Neil', 'Barry', 'Stuart', 'Anthony', 'Graeme', 'John', 'Eddie', 'Kirk', 'Cliff', 'Perrie', 'Ricky', 'Jimmy', 'Daniel', 'Tom', 'Nigel', 'Scott', 'Lewis', 'Damon', 'Jim', 'Sebastian', 'Gareth', 'David', 'Michael', 'Robert', 'James', 'Alan', 'Harry', 'Sterling', 'Richard', 'Bjorg', 'Ivan']
+            LastNames =  ['Walton', 'Davis', 'Hendry', 'Johnson', 'Lumby', 'O\'Sullivan', 'Williams', 'Higgins', 'Murphy','Trump','Walker', 'Jackson', 'Reardon', 'Wilson', 'Robertson', 'Hawkins', 'Bingham', 'McGill', 'Dott', 'Spencer', 'Charlton', 'Stevens', 'Thorburn', 'Mans', 'Walden', 'White', 'Wells', 'Ford', 'Bond', 'Donaldson', 'Hamilton', 'Hill', 'Clark', 'Coe',  'Southgate', 'Coulthard', 'Holt', 'Milkins', 'Whale', 'McManus', 'Kane', 'Moss', 'Osman', 'Borg', 'Lendl']
         return FirstNames, LastNames
 
 
