@@ -31,6 +31,7 @@ class CGame:
     def __init__(self):
         ''' Class constructor. '''
         self.wait = True
+        self.full_ranking = False
 
 
 
@@ -45,12 +46,7 @@ class CGame:
                 nScore2 += 1
             print('{:>22} {:>2} - {:<2} {:<22}'.format(oPlayer1.NameWithRanking(), nScore1, nScore2, oPlayer2.NameWithRanking()), end='\r', flush=True)
 
-            sKey = self.oKeyboard.InKey()
-            if sKey == 'q':
-                self.exit_game = True
-                self.wait = False
-            if sKey == ' ':
-                self.wait = False
+            self.ProcessKeys()
 
             if self.wait:
                 # Wait.
@@ -533,7 +529,11 @@ class CGame:
         if not self.exit_game:
             oWinner = self.PlayOpenTournament(oPlayers, 'Shanghai Masters', 0.3 * fPrizeMoney)
             self.ShowWins(oPlayers, oRetiredPlayers)
-            self.ShowRanking(oPlayers, True, 16)
+            if self.full_ranking:
+                self.ShowRanking(oPlayers, True, 80)
+                self.full_ranking = False
+            else:
+                self.ShowRanking(oPlayers, True, 16)
             sSeason = '{:<22}'.format(oWinner.name)
             self.ShowChampions(oSeasons, nSeason, sSeason, 5)
             oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
@@ -543,7 +543,11 @@ class CGame:
         if not self.exit_game:
             oWinner = self.PlayOpenTournament(oPlayers, 'Welsh Open', 0.3 * fPrizeMoney)
             self.ShowWins(oPlayers, oRetiredPlayers)
-            self.ShowRanking(oPlayers, True, 16)
+            if self.full_ranking:
+                self.ShowRanking(oPlayers, True, 80)
+                self.full_ranking = False
+            else:
+                self.ShowRanking(oPlayers, True, 16)
             sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
             self.ShowChampions(oSeasons, nSeason, sSeason, 4)
             oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
@@ -553,7 +557,11 @@ class CGame:
         if not self.exit_game:
             oWinner = self.PlaySeededTournament(oPlayers, 'UK Championship', 0.6 * fPrizeMoney)
             self.ShowWins(oPlayers, oRetiredPlayers)
-            self.ShowRanking(oPlayers, True, 16)
+            if self.full_ranking:
+                self.ShowRanking(oPlayers, True, 80)
+                self.full_ranking = False
+            else:
+                self.ShowRanking(oPlayers, True, 16)
             sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
             self.ShowChampions(oSeasons, nSeason, sSeason, 3)
             oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
@@ -563,7 +571,11 @@ class CGame:
         if not self.exit_game:
             oWinner = self.PlayOpenTournament(oPlayers, 'German Masters', 0.3 * fPrizeMoney)
             self.ShowWins(oPlayers, oRetiredPlayers)
-            self.ShowRanking(oPlayers, True, 16)
+            if self.full_ranking:
+                self.ShowRanking(oPlayers, True, 80)
+                self.full_ranking = False
+            else:
+                self.ShowRanking(oPlayers, True, 16)
             sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
             self.ShowChampions(oSeasons, nSeason, sSeason, 2)
             oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
@@ -573,7 +585,11 @@ class CGame:
         if not self.exit_game:
             oWinner = self.PlaySeededTournament(oPlayers, 'China Open', 0.6 * fPrizeMoney)
             self.ShowWins(oPlayers, oRetiredPlayers)
-            self.ShowRanking(oPlayers, True, 16)
+            if self.full_ranking:
+                self.ShowRanking(oPlayers, True, 80)
+                self.full_ranking = False
+            else:
+                self.ShowRanking(oPlayers, True, 16)
             sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
             self.ShowChampions(oSeasons, nSeason, sSeason, 1)
             oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
@@ -601,6 +617,28 @@ class CGame:
 
         # Returns the tournament winners this season.
         return sSeason, oRetiredPlayers
+
+
+
+    def ProcessKeys(self):
+        ''' Scan the keyboard for a key and deal with any key presses. '''
+        sKey = self.oKeyboard.InKey()
+        if sKey == 'q':
+            self.exit_game = True
+            self.wait = False
+        if sKey == ' ':
+            self.wait = False
+        if sKey == 'r':
+            self.full_ranking = True
+
+
+
+    def ShowKeys(self):
+        ''' Display the keys that are used in the program. '''
+        print('Keys')
+        print('   q    Quit the program.')
+        print('[space] Complete the tournament.')
+        print('   r    Show full ranking table at the end of tournament.')
 
 
 
@@ -639,6 +677,7 @@ class CGame:
         nLoop = 1968
         fPrizeMoney = 200000.0
         while not self.exit_game:
+            self.ShowKeys()
             sSeason, oRetiredPlayers = self.Season(oPlayers, oSeasons, oRetiredPlayers, nLoop, fPrizeMoney)
 
             # Find the season end number 1 player.
