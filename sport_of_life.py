@@ -32,6 +32,7 @@ class CGame:
         ''' Class constructor. '''
         self.wait = True
         self.full_ranking = False
+        self.highlight = ''
 
 
 
@@ -44,9 +45,18 @@ class CGame:
                 nScore1 += 1
             else:
                 nScore2 += 1
-            print('{:>22} {:>2} - {:<2} {:<22}'.format(oPlayer1.NameWithRanking(), nScore1, nScore2, oPlayer2.NameWithRanking()), end='\r', flush=True)
+            if self.highlight == oPlayer1.name:
+                sPlayer1Colour = modANSI.MAGENTA
+            else:
+                sPlayer1Colour = ''
+            if self.highlight == oPlayer2.name:
+                sPlayer2Colour = modANSI.MAGENTA
+            else:
+                sPlayer2Colour = ''
 
-            self.ProcessKeys()
+            print('{}{:>22}{} {:>2} - {:<2} {}{:<22}{}'.format(sPlayer1Colour, oPlayer1.NameWithRanking(), modANSI.RESET_ALL, nScore1, nScore2, sPlayer2Colour, oPlayer2.NameWithRanking(), modANSI.RESET_ALL), end='\r', flush=True)
+
+            self.ProcessKeys(oPlayer1, oPlayer2)
 
             if self.wait:
                 # Wait.
@@ -620,7 +630,28 @@ class CGame:
 
 
 
-    def ProcessKeys(self):
+    def SelectHighlight(self, oPlayer1, oPlayer2):
+        ''' Select the highlighted player. '''
+        print()
+        print('Select Highlight')
+        print('1) {}'.format(oPlayer1.name))
+        print('2) {}'.format(oPlayer2.name))
+        print('3) Remove highlight')
+        print('4) Keep {}'.format(self.highlight))
+        sKey = self.oKeyboard.InKey()
+        while sKey != '1' and sKey != '2' and sKey != '3' and sKey != '4':
+            sKey = self.oKeyboard.InKey()
+
+        if sKey == '1':
+            self.highlight = oPlayer1.name
+        if sKey == '2':
+            self.highlight = oPlayer2.name
+        if sKey == '3':
+            self.highlight = ''
+
+
+
+    def ProcessKeys(self, oPlayer1, oPlayer2):
         ''' Scan the keyboard for a key and deal with any key presses. '''
         sKey = self.oKeyboard.InKey()
         if sKey == 'q':
@@ -630,6 +661,8 @@ class CGame:
             self.wait = False
         if sKey == 'r':
             self.full_ranking = True
+        if sKey == 'h':
+            self.SelectHighlight(oPlayer1, oPlayer2)
 
 
 
@@ -639,6 +672,7 @@ class CGame:
         print('   q    Quit the program.')
         print('[space] Complete the tournament.')
         print('   r    Show full ranking table at the end of tournament.')
+        print('   h    Select player to highlight.')
 
 
 
@@ -747,7 +781,7 @@ if __name__ == '__main__':
                 else:
                     sLastName = ''
 
-                print('{} {} {} {}'.format(sFirstName, sLastName, 'OK' if bFirstName else 'Error', 'OK' if bLastName else 'Error'))
+                print('{:>2} {} {} {} {}'.format(nIndex+1, sFirstName, sLastName, 'OK' if bFirstName else 'Error', 'OK' if bLastName else 'Error'))
 
 
     #for nCount in range(10):
