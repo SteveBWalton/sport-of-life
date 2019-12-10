@@ -23,493 +23,491 @@ import modANSI
 
 
 
-class CGame:
+class Game:
     ''' Class to represent the game.'''
 
 
 
     def __init__(self):
         ''' Class constructor. '''
-        self.wait = True
-        self.full_ranking = False
+        self.isWait = True
+        self.isFullRanking = False
         self.highlight = ''
 
 
 
-    def PlayMatch(self, oPlayer1, oPlayer2, nWin):
+    def playMatch(self, player1, player2, winTarget):
         ''' Play a match between the specified players. '''
-        nScore1 = 0
-        nScore2 = 0
-        while nScore1 < nWin and nScore2 < nWin:
-            if random.randrange(oPlayer1.skill) >= random.randrange(oPlayer2.skill):
-                nScore1 += 1
+        score1 = 0
+        score2 = 0
+        while score1 < winTarget and score2 < winTarget:
+            if random.randrange(player1.skill) >= random.randrange(player2.skill):
+                score1 += 1
             else:
-                nScore2 += 1
-            if self.highlight == oPlayer1.name:
-                sPlayer1Colour = modANSI.MAGENTA
+                score2 += 1
+            if self.highlight == player1.name:
+                player1Colour = modANSI.MAGENTA
             else:
-                sPlayer1Colour = ''
-            if self.highlight == oPlayer2.name:
-                sPlayer2Colour = modANSI.MAGENTA
+                player1Colour = ''
+            if self.highlight == player2.name:
+                player2Colour = modANSI.MAGENTA
             else:
-                sPlayer2Colour = ''
+                player2Colour = ''
 
-            print('{}{:>22}{} {:>2} - {:<2} {}{:<22}{}'.format(sPlayer1Colour, oPlayer1.NameWithRanking(), modANSI.RESET_ALL, nScore1, nScore2, sPlayer2Colour, oPlayer2.NameWithRanking(), modANSI.RESET_ALL), end='\r', flush=True)
+            print('{}{:>22}{} {:>2} - {:<2} {}{:<22}{}'.format(player1Colour, player1.nameWithRanking(), modANSI.RESET_ALL, score1, score2, player2Colour, player2.nameWithRanking(), modANSI.RESET_ALL), end='\r', flush=True)
 
-            self.ProcessKeys(oPlayer1, oPlayer2)
+            self.ProcessKeys(player1, player2)
 
-            if self.wait:
+            if self.isWait:
                 # Wait.
                 time.sleep(0.25)
 
         print()
 
         # Return the winner and loser.
-        if nScore1 > nScore2:
-            return oPlayer1, oPlayer2
-        return oPlayer2, oPlayer1
+        if score1 > score2:
+            return player1, player2
+        return player2, player1
 
 
 
-    def PlayRound(self, oPlayers, nKeyHome, nKeyAway, nKeyWin, nKeyLose, nNumMatches, nScore):
+    def playRound(self, players, keyHome, keyAway, keyWin, keyLose, numMatches, scoreTarget):
         ''' Play a round of a tournament. '''
-        for nMatch in range(nNumMatches):
+        for matchCount in range(numMatches):
             # Find 2 players that are in this round.
-            nPlayer1 = random.randint(0, len(oPlayers)-1)
-            while oPlayers[nPlayer1].round != nKeyHome:
-                nPlayer1 = random.randint(0, len(oPlayers)-1)
-                # print('{} {}'.format(nPlayer1, oPlayers[nPlayer1].round))
-            oPlayers[nPlayer1].round = nKeyWin
+            player1Index = random.randint(0, len(players)-1)
+            while players[player1Index].round != keyHome:
+                player1Index = random.randint(0, len(players)-1)
+            players[player1Index].round = keyWin
 
-            nPlayer2 = random.randint(0, len(oPlayers)-1)
-            while oPlayers[nPlayer2].round != nKeyAway:
-                nPlayer2 = random.randint(0, len(oPlayers)-1)
-                # print('{} {}'.format(nPlayer1, oPlayers[nPlayer1].round))
-            oPlayers[nPlayer2].round = nKeyWin
+            player2Index = random.randint(0, len(players)-1)
+            while players[player2Index].round != keyAway:
+                player2Index = random.randint(0, len(players)-1)
+            players[player2Index].round = keyWin
 
             # Swap the players, so lowest ranking player in on the left.
-            if oPlayers[nPlayer2].ranking < oPlayers[nPlayer1].ranking:
-                nPlayer1, nPlayer2 = nPlayer2, nPlayer1
+            if players[player2Index].ranking < players[player1Index].ranking:
+                player1Index, player2Index = player2Index, player1Index
 
             # Play the match.
-            oWinner, oLoser = self.PlayMatch(oPlayers[nPlayer1], oPlayers[nPlayer2], nScore)
-            oLoser.round = nKeyLose
+            winner, loser = self.playMatch(players[player1Index], players[player2Index], scoreTarget)
+            loser.round = keyLose
 
 
 
-    def PlaySeededTournament(self, oPlayers, sTitle, fPrizeMoney):
+    def PlaySeededTournament(self, players, title, prizeMoney):
         '''
         Play a tournament with seeded players.
         64 Unseeded players in 2 qualifying rounds.
          '''
-        print('{}{} (Seeded)'.format(' ' * 15, sTitle))
-        self.wait = True
+        print('{}{} (Seeded)'.format(' ' * 15, title))
+        self.isWait = True
 
         # Sort by pts.
-        oPlayers = sorted(oPlayers, key=lambda CPlayer: CPlayer.pts, reverse=True)
+        players = sorted(players, key=lambda Player: Player.pts, reverse=True)
 
         # Seed the players.
-        nCount = 1
-        for oPlayer in oPlayers:
-            oPlayer.round = nCount
-            if nCount < 17:
-                nCount = nCount + 1
-            # print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.round), end='\n')
+        count = 1
+        for player in players:
+            player.round = count
+            if count < 17:
+                count = count + 1
+            # print('{:>5} {:<22}{:>4}'.format(count, player.nameWithRanking(), player.round), end='\n')
 
 
         # Qualifiying.
-        print('{} Qualifying 1'.format(sTitle))
-        self.PlayRound(oPlayers, 17, 17, 18, 0, 32, 5)
+        print('{} Qualifying 1'.format(title))
+        self.playRound(players, 17, 17, 18, 0, 32, 5)
 
-        print('{} Qualifying 2'.format(sTitle))
-        self.PlayRound(oPlayers, 18, 18, 19, 0, 16, 5)
+        print('{} Qualifying 2'.format(title))
+        self.playRound(players, 18, 18, 19, 0, 16, 5)
 
         # Round One.
-        print('{} Round One'.format(sTitle))
-        self.PlayRound(oPlayers, 1, 19, 20, -1, 1, 6)
-        self.PlayRound(oPlayers, 16, 19, 20, -1, 1, 6)
-        self.PlayRound(oPlayers, 9, 19, 21, -1, 1, 6)
-        self.PlayRound(oPlayers, 8, 19, 21, -1, 1, 6)
-        self.PlayRound(oPlayers, 5, 19, 22, -1, 1, 6)
-        self.PlayRound(oPlayers, 11, 19, 22, -1, 1, 6)
-        self.PlayRound(oPlayers, 13, 19, 23, -1, 1, 6)
-        self.PlayRound(oPlayers, 4, 19, 23, -1, 1, 6)
-        self.PlayRound(oPlayers, 3, 19, 24, -1, 1, 6)
-        self.PlayRound(oPlayers, 14, 19, 24, -1, 1, 6)
-        self.PlayRound(oPlayers, 12, 19, 25, -1, 1, 6)
-        self.PlayRound(oPlayers, 6, 19, 25, -1, 1, 6)
-        self.PlayRound(oPlayers, 7, 19, 26, -1, 1, 6)
-        self.PlayRound(oPlayers, 10, 19, 26, -1, 1, 6)
-        self.PlayRound(oPlayers, 15, 19, 27, -1, 1, 6)
-        self.PlayRound(oPlayers, 2, 19, 27, -1, 1, 6)
+        print('{} Round One'.format(title))
+        self.playRound(players, 1, 19, 20, -1, 1, 6)
+        self.playRound(players, 16, 19, 20, -1, 1, 6)
+        self.playRound(players, 9, 19, 21, -1, 1, 6)
+        self.playRound(players, 8, 19, 21, -1, 1, 6)
+        self.playRound(players, 5, 19, 22, -1, 1, 6)
+        self.playRound(players, 11, 19, 22, -1, 1, 6)
+        self.playRound(players, 13, 19, 23, -1, 1, 6)
+        self.playRound(players, 4, 19, 23, -1, 1, 6)
+        self.playRound(players, 3, 19, 24, -1, 1, 6)
+        self.playRound(players, 14, 19, 24, -1, 1, 6)
+        self.playRound(players, 12, 19, 25, -1, 1, 6)
+        self.playRound(players, 6, 19, 25, -1, 1, 6)
+        self.playRound(players, 7, 19, 26, -1, 1, 6)
+        self.playRound(players, 10, 19, 26, -1, 1, 6)
+        self.playRound(players, 15, 19, 27, -1, 1, 6)
+        self.playRound(players, 2, 19, 27, -1, 1, 6)
 
         # Round Two.
-        print('{} Round Two'.format(sTitle))
-        self.PlayRound(oPlayers, 20, 20, 30, -2, 1, 9)
-        self.PlayRound(oPlayers, 21, 21, 30, -2, 1, 9)
-        self.PlayRound(oPlayers, 22, 22, 31, -2, 1, 9)
-        self.PlayRound(oPlayers, 23, 23, 31, -2, 1, 9)
-        self.PlayRound(oPlayers, 24, 24, 32, -2, 1, 9)
-        self.PlayRound(oPlayers, 25, 25, 32, -2, 1, 9)
-        self.PlayRound(oPlayers, 26, 26, 33, -2, 1, 9)
-        self.PlayRound(oPlayers, 27, 27, 33, -2, 1, 9)
+        print('{} Round Two'.format(title))
+        self.playRound(players, 20, 20, 30, -2, 1, 9)
+        self.playRound(players, 21, 21, 30, -2, 1, 9)
+        self.playRound(players, 22, 22, 31, -2, 1, 9)
+        self.playRound(players, 23, 23, 31, -2, 1, 9)
+        self.playRound(players, 24, 24, 32, -2, 1, 9)
+        self.playRound(players, 25, 25, 32, -2, 1, 9)
+        self.playRound(players, 26, 26, 33, -2, 1, 9)
+        self.playRound(players, 27, 27, 33, -2, 1, 9)
 
         # Quarter Finals.
-        print('{} Quarter Finals'.format(sTitle))
-        self.PlayRound(oPlayers, 30, 30, 40, -3, 1, 10)
-        self.PlayRound(oPlayers, 31, 31, 40, -3, 1, 10)
-        self.PlayRound(oPlayers, 32, 32, 41, -3, 1, 10)
-        self.PlayRound(oPlayers, 33, 33, 41, -3, 1, 10)
+        print('{} Quarter Finals'.format(title))
+        self.playRound(players, 30, 30, 40, -3, 1, 10)
+        self.playRound(players, 31, 31, 40, -3, 1, 10)
+        self.playRound(players, 32, 32, 41, -3, 1, 10)
+        self.playRound(players, 33, 33, 41, -3, 1, 10)
 
         # Semi Finals.
-        print('{} Semi Finals'.format(sTitle))
-        self.PlayRound(oPlayers, 40, 40, 50, -4, 1, 13)
-        self.PlayRound(oPlayers, 41, 41, 50, -4, 1, 13)
+        print('{} Semi Finals'.format(title))
+        self.playRound(players, 40, 40, 50, -4, 1, 13)
+        self.playRound(players, 41, 41, 50, -4, 1, 13)
 
-        print('{} Final'.format(sTitle))
-        self.PlayRound(oPlayers, 50, 50, -6, -5, 1, 17)
+        print('{} Final'.format(title))
+        self.playRound(players, 50, 50, -6, -5, 1, 17)
 
         # Allocate ranking points and find the winner.
-        oWinner = None
-        for oPlayer in oPlayers:
-            if oPlayer.round == 9:
-                oPlayer.round = 0
-            elif oPlayer.round == -6:
-                oWinner = oPlayer
-                oWinner.wins += 1
-            elif oPlayer.round == -5:
-                oPlayer.runner_up += 1
+        winner = None
+        for player in players:
+            if player.round == 9:
+                player.round = 0
+            elif player.round == -6:
+                winner = player
+                winner.wins += 1
+            elif player.round == -5:
+                player.runnerUp += 1
 
-            nPts = [0, 1, 2, 4, 8, 16, 32][-oPlayer.round]
-            oPlayer.history.append(nPts)
-            while len(oPlayer.history) > 12:
-                del oPlayer.history[0]
-            oPlayer.pts = 0
-            for nPts in oPlayer.history:
-                oPlayer.pts += nPts
+            pts = [0, 1, 2, 4, 8, 16, 32][-player.round]
+            player.history.append(pts)
+            while len(player.history) > 12:
+                del player.history[0]
+            player.pts = 0
+            for pts in player.history:
+                player.pts += pts
 
             # Prize Money.
-            nMoney = [0, 13, 28, 42, 56, 75, 100][-oPlayer.round]
-            fMoney = fPrizeMoney * (nMoney / 100)
-            oPlayer.prize_money += fMoney
-            oPlayer.season_money += fMoney
+            moneyIndex = [0, 13, 28, 42, 56, 75, 100][-player.round]
+            actualMoney = prizeMoney * (moneyIndex / 100)
+            player.prizeMoney += actualMoney
+            player.seasonMoney += actualMoney
 
         # Wait.
         time.sleep(1)
 
         # Return the winner.
-        return oWinner
+        return winner
 
 
 
-    def PlayWorldChampionshipTournament(self, oPlayers, fPrizeMoney):
+    def PlayWorldChampionshipTournament(self, players, prizeMoney):
         ''' Play a world championship tournament. '''
         print('{}World Championship'.format(' ' * 15))
-        self.wait = True
+        self.isWait = True
 
         # Sort by pts.
-        oPlayers = sorted(oPlayers, key=lambda CPlayer: CPlayer.pts, reverse=True)
+        players = sorted(players, key=lambda Player: Player.pts, reverse=True)
 
         # Seed the players.
-        nCount = 1
-        for oPlayer in oPlayers:
-            oPlayer.round = nCount
-            if nCount < 17:
-                nCount = nCount + 1
-            # print('{:>5} {:<22}{:>4}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.round), end='\n')
+        count = 1
+        for player in players:
+            player.round = count
+            if count < 17:
+                count = count + 1
+            # print('{:>5} {:<22}{:>4}'.format(count, player.nameWithRanking(), player.round), end='\n')
 
         # Qualifiying.
         print('World Championship Qualifying 1')
-        self.PlayRound(oPlayers, 17, 17, 18, 0, 32, 10)
+        self.playRound(players, 17, 17, 18, 0, 32, 10)
 
         print('World Championship Qualifying 2')
-        self.PlayRound(oPlayers, 18, 18, 19, 0, 16, 10)
+        self.playRound(players, 18, 18, 19, 0, 16, 10)
 
         # Round One.
         print('World Championship Round One')
-        self.PlayRound(oPlayers, 1, 19, 20, -1, 1, 10)
-        self.PlayRound(oPlayers, 16, 19, 20, -1, 1, 10)
-        self.PlayRound(oPlayers, 9, 19, 21, -1, 1, 10)
-        self.PlayRound(oPlayers, 8, 19, 21, -1, 1, 10)
-        self.PlayRound(oPlayers, 5, 19, 22, -1, 1, 10)
-        self.PlayRound(oPlayers, 11, 19, 22, -1, 1, 10)
-        self.PlayRound(oPlayers, 13, 19, 23, -1, 1, 10)
-        self.PlayRound(oPlayers, 4, 19, 23, -1, 1, 10)
-        self.PlayRound(oPlayers, 3, 19, 24, -1, 1, 10)
-        self.PlayRound(oPlayers, 14, 19, 24, -1, 1, 10)
-        self.PlayRound(oPlayers, 12, 19, 25, -1, 1, 10)
-        self.PlayRound(oPlayers, 6, 19, 25, -1, 1, 10)
-        self.PlayRound(oPlayers, 7, 19, 26, -1, 1, 10)
-        self.PlayRound(oPlayers, 10, 19, 26, -1, 1, 10)
-        self.PlayRound(oPlayers, 15, 19, 27, -1, 1, 10)
-        self.PlayRound(oPlayers, 2, 19, 27, -1, 1, 10)
+        self.playRound(players, 1, 19, 20, -1, 1, 10)
+        self.playRound(players, 16, 19, 20, -1, 1, 10)
+        self.playRound(players, 9, 19, 21, -1, 1, 10)
+        self.playRound(players, 8, 19, 21, -1, 1, 10)
+        self.playRound(players, 5, 19, 22, -1, 1, 10)
+        self.playRound(players, 11, 19, 22, -1, 1, 10)
+        self.playRound(players, 13, 19, 23, -1, 1, 10)
+        self.playRound(players, 4, 19, 23, -1, 1, 10)
+        self.playRound(players, 3, 19, 24, -1, 1, 10)
+        self.playRound(players, 14, 19, 24, -1, 1, 10)
+        self.playRound(players, 12, 19, 25, -1, 1, 10)
+        self.playRound(players, 6, 19, 25, -1, 1, 10)
+        self.playRound(players, 7, 19, 26, -1, 1, 10)
+        self.playRound(players, 10, 19, 26, -1, 1, 10)
+        self.playRound(players, 15, 19, 27, -1, 1, 10)
+        self.playRound(players, 2, 19, 27, -1, 1, 10)
 
         # Round Two.
         print('World Championship Round Two')
-        self.PlayRound(oPlayers, 20, 20, 30, -2, 1, 13)
-        self.PlayRound(oPlayers, 21, 21, 30, -2, 1, 13)
-        self.PlayRound(oPlayers, 22, 22, 31, -2, 1, 13)
-        self.PlayRound(oPlayers, 23, 23, 31, -2, 1, 13)
-        self.PlayRound(oPlayers, 24, 24, 32, -2, 1, 13)
-        self.PlayRound(oPlayers, 25, 25, 32, -2, 1, 13)
-        self.PlayRound(oPlayers, 26, 26, 33, -2, 1, 13)
-        self.PlayRound(oPlayers, 27, 27, 33, -2, 1, 13)
+        self.playRound(players, 20, 20, 30, -2, 1, 13)
+        self.playRound(players, 21, 21, 30, -2, 1, 13)
+        self.playRound(players, 22, 22, 31, -2, 1, 13)
+        self.playRound(players, 23, 23, 31, -2, 1, 13)
+        self.playRound(players, 24, 24, 32, -2, 1, 13)
+        self.playRound(players, 25, 25, 32, -2, 1, 13)
+        self.playRound(players, 26, 26, 33, -2, 1, 13)
+        self.playRound(players, 27, 27, 33, -2, 1, 13)
 
         # Quarter Finals.
         print('World Championship Quarter Finals')
-        self.PlayRound(oPlayers, 30, 30, 40, -3, 1, 13)
-        self.PlayRound(oPlayers, 31, 31, 40, -3, 1, 13)
-        self.PlayRound(oPlayers, 32, 32, 41, -3, 1, 13)
-        self.PlayRound(oPlayers, 33, 33, 41, -3, 1, 13)
+        self.playRound(players, 30, 30, 40, -3, 1, 13)
+        self.playRound(players, 31, 31, 40, -3, 1, 13)
+        self.playRound(players, 32, 32, 41, -3, 1, 13)
+        self.playRound(players, 33, 33, 41, -3, 1, 13)
 
         # Semi Finals.
         print('World Championship Semi Finals')
-        self.PlayRound(oPlayers, 40, 40, 50, -4, 1, 17)
-        self.PlayRound(oPlayers, 41, 41, 50, -4, 1, 17)
+        self.playRound(players, 40, 40, 50, -4, 1, 17)
+        self.playRound(players, 41, 41, 50, -4, 1, 17)
 
         print('World Championship Final')
-        self.PlayRound(oPlayers, 50, 50, -6, -5, 1, 18)
+        self.playRound(players, 50, 50, -6, -5, 1, 18)
 
         # Allocate ranking points and find the winner.
-        oWinner = None
-        for oPlayer in oPlayers:
-            if oPlayer.round == 9:
-                oPlayer.round = 0
-            elif oPlayer.round == -6:
-                oWinner = oPlayer
-                oWinner.wins += 1
-                oWinner.world_champion += 1
-            elif oPlayer.round == -5:
-                oPlayer.runner_up += 1
+        winner = None
+        for player in players:
+            if player.round == 9:
+                player.round = 0
+            elif player.round == -6:
+                winner = player
+                winner.wins += 1
+                winner.worldChampion += 1
+            elif player.round == -5:
+                player.runnerUp += 1
 
-            nPts = [0, 2, 4, 8, 16, 32, 64][-oPlayer.round]
-            oPlayer.history.append(nPts)
+            pts = [0, 2, 4, 8, 16, 32, 64][-player.round]
+            player.history.append(pts)
 
-            while len(oPlayer.history) > 12:
-                del oPlayer.history[0]
-            oPlayer.pts = 0
-            for nPts in oPlayer.history:
-                oPlayer.pts += nPts
+            while len(player.history) > 12:
+                del player.history[0]
+            player.pts = 0
+            for pts in player.history:
+                player.pts += pts
 
             # Prize Money.
-            nMoney = [0, 13, 28, 42, 56, 75, 100][-oPlayer.round]
-            fMoney = fPrizeMoney * (nMoney / 100)
-            oPlayer.prize_money += fMoney
-            oPlayer.season_money += fMoney
+            moneyIndex = [0, 13, 28, 42, 56, 75, 100][-player.round]
+            actualMoney = prizeMoney * (moneyIndex / 100)
+            player.prizeMoney += actualMoney
+            player.seasonMoney += actualMoney
 
         # Wait.
         time.sleep(1)
 
         # Return the winner.
-        return oWinner
+        return winner
 
 
 
-    def PlayOpenTournament(self, oPlayers, sTitle, fPrizeMoney):
+    def playOpenTournament(self, players, title, prizeMoney):
         '''
         Play a tournament with all the players.
         Qualifying 1 80 Players 16 matches to get 64 players.
         Qualifying 2 64 players 32 matches to get 32 players.
         '''
-        print('{}{} (Open)'.format(' ' * 15, sTitle))
-        self.wait = True
+        print('{}{} (Open)'.format(' ' * 15, title))
+        self.isWait = True
 
-        for oPlayer in oPlayers:
-            oPlayer.round = 1
+        for player in players:
+            player.round = 1
 
         # Qualifiying.
-        print('{} Qualifying 1'.format(sTitle))
-        self.PlayRound(oPlayers, 1, 1, 2, 0, 16, 5)
+        print('{} Qualifying 1'.format(title))
+        self.playRound(players, 1, 1, 2, 0, 16, 5)
 
         # Put the winners back into qualifying.
-        for oPlayer in oPlayers:
-            if oPlayer.round == 2:
-                oPlayer.round = 1
+        for player in players:
+            if player.round == 2:
+                player.round = 1
 
-        print('{} Qualifying 2'.format(sTitle))
-        self.PlayRound(oPlayers, 1, 1, 2, 0, 32, 5)
+        print('{} Qualifying 2'.format(title))
+        self.playRound(players, 1, 1, 2, 0, 32, 5)
 
         # Round One.
-        print('{} Round One'.format(sTitle))
-        self.PlayRound(oPlayers, 2, 2, 3, -1, 16, 6)
+        print('{} Round One'.format(title))
+        self.playRound(players, 2, 2, 3, -1, 16, 6)
 
         # Round Two.
-        print('{} Round Two'.format(sTitle))
-        self.PlayRound(oPlayers, 3, 3, 4, -2, 8, 6)
+        print('{} Round Two'.format(title))
+        self.playRound(players, 3, 3, 4, -2, 8, 6)
 
         # Quarter Finals.
-        print('{} Quarter Finals'.format(sTitle))
-        self.PlayRound(oPlayers, 4, 4, 5, -3, 4, 6)
+        print('{} Quarter Finals'.format(title))
+        self.playRound(players, 4, 4, 5, -3, 4, 6)
 
         # Semi Finals.
-        print('{} Semi Finals'.format(sTitle))
-        self.PlayRound(oPlayers, 5, 5, 6, -4, 2, 9)
+        print('{} Semi Finals'.format(title))
+        self.playRound(players, 5, 5, 6, -4, 2, 9)
 
-        print('{} Final'.format(sTitle))
-        self.PlayRound(oPlayers, 6, 6, -6, -5, 1, 10)
+        print('{} Final'.format(title))
+        self.playRound(players, 6, 6, -6, -5, 1, 10)
 
         # Allocate ranking points and find the winner.
-        oWinner = None
-        for oPlayer in oPlayers:
-            if oPlayer.round == -6:
-                oWinner = oPlayer
-                oWinner.wins += 1
-            elif oPlayer.round == -5:
-                oPlayer.runner_up += 1
-            nPts = [0, 1, 2, 4, 8, 16, 32][-oPlayer.round]
-            oPlayer.history.append(nPts)
-            while len(oPlayer.history) > 12:
-                del oPlayer.history[0]
-            oPlayer.pts = 0
-            for nPts in oPlayer.history:
-                oPlayer.pts += nPts
+        winner = None
+        for player in players:
+            if player.round == -6:
+                winner = player
+                winner.wins += 1
+            elif player.round == -5:
+                player.runnerUp += 1
+            pts = [0, 1, 2, 4, 8, 16, 32][-player.round]
+            player.history.append(pts)
+            while len(player.history) > 12:
+                del player.history[0]
+            player.pts = 0
+            for pts in player.history:
+                player.pts += pts
 
             # Prize Money.
-            nMoney = [0, 13, 28, 42, 56, 75, 100][-oPlayer.round]
-            fMoney = fPrizeMoney * (nMoney / 100)
-            oPlayer.prize_money += fMoney
-            oPlayer.season_money += fMoney
+            moneyIndex = [0, 13, 28, 42, 56, 75, 100][-player.round]
+            actualMoney = prizeMoney * (moneyIndex / 100)
+            player.prizeMoney += actualMoney
+            player.seasonMoney += actualMoney
 
         # Wait.
         time.sleep(1)
 
         # Return the winner.
-        return oWinner
+        return winner
 
 
 
-    def ShowRanking(self, oPlayers, bUpdate, nNumShow):
+    def ShowRanking(self, players, bUpdate, nNumShow):
         ''' Display the players in ranking points order. '''
         # Sort by pts.
-        oPlayers = sorted(oPlayers, key=lambda CPlayer: CPlayer.pts, reverse=True)
-        # oPlayers = sorted(oPlayers, key=attrgetter('pts'), reverse=True)
+        players = sorted(players, key=lambda Player: Player.pts, reverse=True)
+        # players = sorted(players, key=attrgetter('pts'), reverse=True)
 
         print('Top {}'.format(nNumShow))
-        nCount = 1
-        for oPlayer in oPlayers:
-            if nCount <= nNumShow:
-                if nCount == 1:
-                    oPlayer.top_ranking += 1
-                if oPlayer.age >= 40:
+        count = 1
+        for player in players:
+            if count <= nNumShow:
+                if count == 1:
+                    player.topRanking += 1
+                if player.age >= 40:
                     sColour = modANSI.BOLD_CYAN
-                elif oPlayer.age >= 35:
+                elif player.age >= 35:
                     sColour = modANSI.CYAN
-                elif oPlayer.age <= 21:
+                elif player.age <= 21:
                     sColour = modANSI.YELLOW
                 else:
                     sColour = ''
-                if oPlayer.round == -6:
+                if player.round == -6:
                     # Winner of last tournament.
                     sColour = modANSI.RED
-                print('{:>5} {}{:<22}{:>4}'.format(nCount, sColour, oPlayer.NameWithRanking(), oPlayer.pts), end='')
-                print('{:>13,.2f}'.format(oPlayer.season_money), end='')
-                for nPts in oPlayer.history:
-                    print('{:>3}'.format(nPts), end='')
+                print('{:>5} {}{:<22}{:>4}'.format(count, sColour, player.nameWithRanking(), player.pts), end='')
+                print('{:>13,.2f}'.format(player.seasonMoney), end='')
+                for pts in player.history:
+                    print('{:>3}'.format(pts), end='')
 
-                print('      ({})'.format(oPlayer.age), end='')
-                print('      ({:>4})'.format(oPlayer.skill), end='')
+                print('      ({})'.format(player.age), end='')
+                print('      ({:>4})'.format(player.skill), end='')
 
                 print('{}'.format(modANSI.RESET_ALL))
             if bUpdate:
-                oPlayer.ranking = nCount
-            nCount = nCount + 1
+                player.ranking = count
+            count += 1
 
         # Wait.
         time.sleep(1)
 
 
-    def UpdateSkill(self, oPlayers):
+    def UpdateSkill(self, players):
         ''' Update the skill of the players. '''
-        for oPlayer in oPlayers:
+        for player in players:
             # Add age related skill.
-            if oPlayer.age <= 20:
-                oPlayer.skill += 10
-            elif oPlayer.age <= 24:
-                oPlayer.skill += 5
-            elif oPlayer.age >= 40:
-                oPlayer.skill -= 20
-            elif oPlayer.age >= 35:
-                oPlayer.skill -= 10
-            elif oPlayer.age >= 30:
-                oPlayer.skill -= 2
+            if player.age <= 20:
+                player.skill += 10
+            elif player.age <= 24:
+                player.skill += 5
+            elif player.age >= 40:
+                player.skill -= 20
+            elif player.age >= 35:
+                player.skill -= 10
+            elif player.age >= 30:
+                player.skill -= 2
 
             # Add random skill.
-            oPlayer.skill += random.randint(-20, 20)
+            player.skill += random.randint(-20, 20)
 
             # Reset the short term shifts.
-            if oPlayer.skill_offset != 0:
-                if oPlayer.skill_offset > 0:
-                    oPlayer.skill += 100
-                    oPlayer.skill_offset -= 100
-                    print('{} is injuried ({}, {})'.format(oPlayer.NameWithRanking(), oPlayer.skill, oPlayer.skill_offset))
+            if player.skill_offset != 0:
+                if player.skill_offset > 0:
+                    player.skill += 100
+                    player.skill_offset -= 100
+                    print('{} is injuried ({}, {})'.format(player.nameWithRanking(), player.skill, player.skill_offset))
                 else:
-                    oPlayer.skill -= 100
-                    oPlayer.skill_offset += 100
-                    print('{} is boosted ({}, {})'.format(oPlayer.NameWithRanking(), oPlayer.skill, oPlayer.skill_offset))
+                    player.skill -= 100
+                    player.skill_offset += 100
+                    print('{} is boosted ({}, {})'.format(player.nameWithRanking(), player.skill, player.skill_offset))
 
             if random.randint(0, 1000) == 0:
-               print('{} has a boost.'.format(oPlayer.NameWithRanking()))
-               oPlayer.skill += 600
-               oPlayer.skill_offset -= 600
+               print('{} has a boost.'.format(player.nameWithRanking()))
+               player.skill += 600
+               player.skill_offset -= 600
             if random.randint(0, 100) == 0:
-                print('{} has an injury.'.format(oPlayer.NameWithRanking()))
-                oPlayer.skill -= 500
-                oPlayer.skill_offset += 500
+                print('{} has an injury.'.format(player.nameWithRanking()))
+                player.skill -= 500
+                player.skill_offset += 500
 
-            if oPlayer.skill > 999:
-                oPlayer.skill -= 1
+            if player.skill > 999:
+                player.skill -= 1
 
-            if oPlayer.skill < 100:
-                oPlayer.skill = 100
+            if player.skill < 100:
+                player.skill = 100
 
 
 
-    def AddAge(self, oPlayers, oRetiredPlayers):
+    def addAge(self, players, retiredPlayers):
         ''' Update the age of the players. '''
-        for oPlayer in oPlayers:
-            oPlayer.age += 1
-            if oPlayer.ranking > 70 and oPlayer.age > 35:
-                print('{} has retired, aged {}. '.format(oPlayer.name, oPlayer.age), end='')
-                oRetiredPlayer = oPlayer.Retire()
-                oRetiredPlayers.append(oRetiredPlayer)
+        for player in players:
+            player.age += 1
+            if player.ranking > 70 and player.age > 35:
+                print('{} has retired, aged {}. '.format(player.name, player.age), end='')
+                retiredPlayer = player.retire()
+                retiredPlayers.append(retiredPlayer)
 
-                oPlayer.Reset()
-                oPlayer.skill = random.randint(50, 450) + random.randint(50, 450)
-                nCulture = 0
+                player.reset()
+                player.skill = random.randint(50, 450) + random.randint(50, 450)
+                cultureIndex = 0
                 if random.randint(0, 6) == 4:
-                    nCulture = 1
-                oPlayer.RandomName(nCulture)
-                print('{} has joined the tour.'.format(oPlayer.name))
+                    cultureIndex = 1
+                player.randomName(cultureIndex)
+                print('{} has joined the tour.'.format(player.name))
 
         # Wait.
         time.sleep(1)
 
         # Return the new list of retired players
-        return oRetiredPlayers
+        return retiredPlayers
 
 
 
-    def ShowWins(self, oPlayers, oRetiredPlayers):
+    def showWins(self, players, retiredPlayers):
         ''' Display the players in ranking points order. '''
         # Sort by pts.
-        oPlayers = sorted(oPlayers + oRetiredPlayers, key=lambda CPlayer: (CPlayer.wins, CPlayer.runner_up), reverse=True)
+        players = sorted(players + retiredPlayers, key=lambda Player: (Player.wins, Player.runnerUp), reverse=True)
 
         print('Wins ')
-        nCount = 1
-        for oPlayer in oPlayers:
-            if oPlayer.wins > 0 or oPlayer.runner_up > 0:
-                if oPlayer.ranking > 500:
-                    print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(nCount, modANSI.CYAN, oPlayer.NameWithYearRange(), oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money, modANSI.RESET_ALL), end='')
+        count = 1
+        for player in players:
+            if player.wins > 0 or player.runnerUp > 0:
+                if player.ranking > 500:
+                    print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, modANSI.CYAN, player.nameWithYearRange(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, modANSI.RESET_ALL), end='')
 
                 else:
-                    if oPlayer.round == -6:
+                    if player.round == -6:
                         # Winner of last tournament.
-                        print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(nCount, modANSI.RED, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money, modANSI.RESET_ALL), end='')
+                        print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, modANSI.RED, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, modANSI.RESET_ALL), end='')
                     else:
-                        print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(nCount, oPlayer.NameWithRanking(), oPlayer.wins, oPlayer.wins + oPlayer.runner_up, oPlayer.world_champion, oPlayer.top_ranking / 6, oPlayer.prize_money), end='')
+                        print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(count, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney), end='')
 
                 print()
-            nCount = nCount + 1
+            count += 1
 
         # Wait.
         time.sleep(1)
@@ -529,113 +527,113 @@ class CGame:
 
 
 
-    def Season(self, oPlayers, oSeasons, oRetiredPlayers, nSeason, fPrizeMoney):
+    def Season(self, players, oSeasons, retiredPlayers, seasonIndex, prizeMoney):
         ''' Execute a season in the sport of life game. '''
-        # Reset for the season.
-        for oPlayer in oPlayers:
-            oPlayer.season_money = 0
+        # reset for the season.
+        for player in players:
+            player.seasonMoney = 0
 
         # Play the season.
-        if not self.exit_game:
-            oWinner = self.PlayOpenTournament(oPlayers, 'Shanghai Masters', 0.3 * fPrizeMoney)
-            self.ShowWins(oPlayers, oRetiredPlayers)
-            if self.full_ranking:
-                self.ShowRanking(oPlayers, True, 80)
-                self.full_ranking = False
+        if not self.isExitGame:
+            winner = self.playOpenTournament(players, 'Shanghai Masters', 0.3 * prizeMoney)
+            self.showWins(players, retiredPlayers)
+            if self.isFullRanking:
+                self.ShowRanking(players, True, 80)
+                self.isFullRanking = False
             else:
-                self.ShowRanking(oPlayers, True, 16)
-            sSeason = '{:<22}'.format(oWinner.name)
-            self.ShowChampions(oSeasons, nSeason, sSeason, 5)
-            oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
-            oWinner.last_win = nSeason
-            self.UpdateSkill(oPlayers)
+                self.ShowRanking(players, True, 16)
+            sSeason = '{:<22}'.format(winner.name)
+            self.ShowChampions(oSeasons, seasonIndex, sSeason, 5)
+            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.lastWin = seasonIndex
+            self.UpdateSkill(players)
 
-        if not self.exit_game:
-            oWinner = self.PlayOpenTournament(oPlayers, 'Welsh Open', 0.3 * fPrizeMoney)
-            self.ShowWins(oPlayers, oRetiredPlayers)
-            if self.full_ranking:
-                self.ShowRanking(oPlayers, True, 80)
-                self.full_ranking = False
+        if not self.isExitGame:
+            winner = self.playOpenTournament(players, 'Welsh Open', 0.3 * prizeMoney)
+            self.showWins(players, retiredPlayers)
+            if self.isFullRanking:
+                self.ShowRanking(players, True, 80)
+                self.isFullRanking = False
             else:
-                self.ShowRanking(oPlayers, True, 16)
-            sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-            self.ShowChampions(oSeasons, nSeason, sSeason, 4)
-            oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
-            oWinner.last_win = nSeason
-            self.UpdateSkill(oPlayers)
+                self.ShowRanking(players, True, 16)
+            sSeason = '{:<22}{}'.format(winner.name, sSeason)
+            self.ShowChampions(oSeasons, seasonIndex, sSeason, 4)
+            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.lastWin = seasonIndex
+            self.UpdateSkill(players)
 
-        if not self.exit_game:
-            oWinner = self.PlaySeededTournament(oPlayers, 'UK Championship', 0.6 * fPrizeMoney)
-            self.ShowWins(oPlayers, oRetiredPlayers)
-            if self.full_ranking:
-                self.ShowRanking(oPlayers, True, 80)
-                self.full_ranking = False
+        if not self.isExitGame:
+            winner = self.PlaySeededTournament(players, 'UK Championship', 0.6 * prizeMoney)
+            self.showWins(players, retiredPlayers)
+            if self.isFullRanking:
+                self.ShowRanking(players, True, 80)
+                self.isFullRanking = False
             else:
-                self.ShowRanking(oPlayers, True, 16)
-            sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-            self.ShowChampions(oSeasons, nSeason, sSeason, 3)
-            oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
-            oWinner.last_win = nSeason
-            self.UpdateSkill(oPlayers)
+                self.ShowRanking(players, True, 16)
+            sSeason = '{:<22}{}'.format(winner.name, sSeason)
+            self.ShowChampions(oSeasons, seasonIndex, sSeason, 3)
+            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.lastWin = seasonIndex
+            self.UpdateSkill(players)
 
-        if not self.exit_game:
-            oWinner = self.PlayOpenTournament(oPlayers, 'German Masters', 0.3 * fPrizeMoney)
-            self.ShowWins(oPlayers, oRetiredPlayers)
-            if self.full_ranking:
-                self.ShowRanking(oPlayers, True, 80)
-                self.full_ranking = False
+        if not self.isExitGame:
+            winner = self.playOpenTournament(players, 'German Masters', 0.3 * prizeMoney)
+            self.showWins(players, retiredPlayers)
+            if self.isFullRanking:
+                self.ShowRanking(players, True, 80)
+                self.isFullRanking = False
             else:
-                self.ShowRanking(oPlayers, True, 16)
-            sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-            self.ShowChampions(oSeasons, nSeason, sSeason, 2)
-            oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
-            oWinner.last_win = nSeason
-            self.UpdateSkill(oPlayers)
+                self.ShowRanking(players, True, 16)
+            sSeason = '{:<22}{}'.format(winner.name, sSeason)
+            self.ShowChampions(oSeasons, seasonIndex, sSeason, 2)
+            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.lastWin = seasonIndex
+            self.UpdateSkill(players)
 
-        if not self.exit_game:
-            oWinner = self.PlaySeededTournament(oPlayers, 'China Open', 0.6 * fPrizeMoney)
-            self.ShowWins(oPlayers, oRetiredPlayers)
-            if self.full_ranking:
-                self.ShowRanking(oPlayers, True, 80)
-                self.full_ranking = False
+        if not self.isExitGame:
+            winner = self.PlaySeededTournament(players, 'China Open', 0.6 * prizeMoney)
+            self.showWins(players, retiredPlayers)
+            if self.isFullRanking:
+                self.ShowRanking(players, True, 80)
+                self.isFullRanking = False
             else:
-                self.ShowRanking(oPlayers, True, 16)
-            sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-            self.ShowChampions(oSeasons, nSeason, sSeason, 1)
-            oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
-            oWinner.last_win = nSeason
-            self.UpdateSkill(oPlayers)
+                self.ShowRanking(players, True, 16)
+            sSeason = '{:<22}{}'.format(winner.name, sSeason)
+            self.ShowChampions(oSeasons, seasonIndex, sSeason, 1)
+            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.lastWin = seasonIndex
+            self.UpdateSkill(players)
 
-        if not self.exit_game:
-            oWinner = self.PlayWorldChampionshipTournament(oPlayers, fPrizeMoney)
-            self.ShowWins(oPlayers, oRetiredPlayers)
-            self.ShowRanking(oPlayers, True, 80)
+        if not self.isExitGame:
+            winner = self.PlayWorldChampionshipTournament(players, prizeMoney)
+            self.showWins(players, retiredPlayers)
+            self.ShowRanking(players, True, 80)
             time.sleep(10)
-            sSeason = '{:<22}{}'.format(oWinner.name, sSeason)
-            self.ShowChampions(oSeasons, nSeason, sSeason, 0)
-            oWinner.first_win = oWinner.first_win if oWinner.first_win != None else nSeason
-            oWinner.last_win = nSeason
-            self.UpdateSkill(oPlayers)
+            sSeason = '{:<22}{}'.format(winner.name, sSeason)
+            self.ShowChampions(oSeasons, seasonIndex, sSeason, 0)
+            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.lastWin = seasonIndex
+            self.UpdateSkill(players)
 
         # Age and retire the players.
-        if not self.exit_game:
-            oRetiredPlayers = self.AddAge(oPlayers, oRetiredPlayers)
+        if not self.isExitGame:
+            retiredPlayers = self.addAge(players, retiredPlayers)
 
         # Wait.
-        if not self.exit_game:
+        if not self.isExitGame:
             time.sleep(10)
 
         # Returns the tournament winners this season.
-        return sSeason, oRetiredPlayers
+        return sSeason, retiredPlayers
 
 
 
-    def SelectHighlight(self, oPlayer1, oPlayer2):
+    def SelectHighlight(self, player1, player2):
         ''' Select the highlighted player. '''
         print()
         print('Select Highlight')
-        print('1) {}'.format(oPlayer1.name))
-        print('2) {}'.format(oPlayer2.name))
+        print('1) {}'.format(player1.name))
+        print('2) {}'.format(player2.name))
         print('3) Remove highlight')
         print('4) Keep {}'.format(self.highlight))
         sKey = self.oKeyboard.InKey()
@@ -643,26 +641,26 @@ class CGame:
             sKey = self.oKeyboard.InKey()
 
         if sKey == '1':
-            self.highlight = oPlayer1.name
+            self.highlight = player1.name
         if sKey == '2':
-            self.highlight = oPlayer2.name
+            self.highlight = player2.name
         if sKey == '3':
             self.highlight = ''
 
 
 
-    def ProcessKeys(self, oPlayer1, oPlayer2):
+    def ProcessKeys(self, player1, player2):
         ''' Scan the keyboard for a key and deal with any key presses. '''
         sKey = self.oKeyboard.InKey()
         if sKey == 'q':
-            self.exit_game = True
-            self.wait = False
+            self.isExitGame = True
+            self.isWait = False
         if sKey == ' ':
-            self.wait = False
+            self.isWait = False
         if sKey == 'r':
-            self.full_ranking = True
+            self.isFullRanking = True
         if sKey == 'h':
-            self.SelectHighlight(oPlayer1, oPlayer2)
+            self.SelectHighlight(player1, player2)
 
 
 
@@ -676,56 +674,56 @@ class CGame:
 
 
 
-    def Run(self):
+    def run(self):
         ''' Execute the sport of life game. '''
         # Create a keyboard scan.
         import modInkey
         self.oKeyboard = modInkey.CInKey()
-        self.exit_game = False
+        self.isExitGame = False
 
         # Create 80 players.
         print('80 players join the tour. ', end='')
-        oPlayers = []
+        players = []
         for nLoop in range(80):
-            oPlayer = modPlayer.CPlayer(None)
-            oPlayer.skill = random.randint(100, 999)
-            oPlayer.age = random.randint(20, 36)
+            player = modPlayer.Player(None)
+            player.skill = random.randint(100, 999)
+            player.age = random.randint(20, 36)
             if nLoop < 100:
-                oPlayer.RandomName(0)
+                player.randomName(0)
             else:
-                oPlayer.RandomName(1)
-            oPlayers.append(oPlayer)
+                player.randomName(1)
+            players.append(player)
         print()
 
-        nPlayerID = random.randint(0, len(oPlayers)-1)
-        oPlayer = oPlayers[nPlayerID]
-        print('{} has an injury.'.format(oPlayer.name))
-        oPlayer.skill -= 600
-        oPlayer.skill_offset += 600
-        if oPlayer.skill < 100:
-            oPlayer.skill = 100
-        print('{} {} {}'.format(oPlayer.name, oPlayer.skill, oPlayer.skill_offset))
+        nPlayerID = random.randint(0, len(players)-1)
+        player = players[nPlayerID]
+        print('{} has an injury.'.format(player.name))
+        player.skill -= 600
+        player.skill_offset += 600
+        if player.skill < 100:
+            player.skill = 100
+        print('{} {} {}'.format(player.name, player.skill, player.skill_offset))
 
-        oRetiredPlayers = []
+        retiredPlayers = []
         oSeasons = []
         nLoop = 1968
-        fPrizeMoney = 200000.0
-        while not self.exit_game:
+        prizeMoney = 200000.0
+        while not self.isExitGame:
             self.ShowKeys()
-            sSeason, oRetiredPlayers = self.Season(oPlayers, oSeasons, oRetiredPlayers, nLoop, fPrizeMoney)
+            sSeason, retiredPlayers = self.Season(players, oSeasons, retiredPlayers, nLoop, prizeMoney)
 
             # Find the season end number 1 player.
             oNumberOne = None
-            oTopMoney = oPlayers[0]
-            for oPlayer in oPlayers:
-                if oPlayer.ranking == 1:
-                    oNumberOne = oPlayer
-                if oPlayer.season_money > oTopMoney.season_money:
-                    oTopMoney = oPlayer
+            oTopMoney = players[0]
+            for player in players:
+                if player.ranking == 1:
+                    oNumberOne = player
+                if player.seasonMoney > oTopMoney.seasonMoney:
+                    oTopMoney = player
 
-            oSeasons.append('{} {} {:>4} {:<22} {:>12,.2f} {}'.format(nLoop, sSeason, oNumberOne.pts, oNumberOne.name, oTopMoney.season_money, oTopMoney.name))
+            oSeasons.append('{} {} {:>4} {:<22} {:>12,.2f} {}'.format(nLoop, sSeason, oNumberOne.pts, oNumberOne.name, oTopMoney.seasonMoney, oTopMoney.name))
 
-            fPrizeMoney *= 1.05
+            prizeMoney *= 1.05
             nLoop += 1
 
             # Wait.
@@ -739,9 +737,9 @@ class CGame:
 if __name__ == '__main__':
     # Process the command line arguments.
     # This might end the program (--help).
-    oParse = argparse.ArgumentParser(prog='sport_of_life', description='Little game to run under Linux and Windows.')
-    oParse.add_argument('-n', '--names', help='Test the player names.', action='store_true')
-    oArgs = oParse.parse_args()
+    argParse = argparse.ArgumentParser(prog='sport_of_life', description='Little game to run under Linux and Windows.')
+    argParse.add_argument('-n', '--names', help='Test the player names.', action='store_true')
+    args = argParse.parse_args()
 
     # Welcome message.
     print('{}Sport Of Life{} by Steve Walton 2018-2019.'.format(modANSI.RED, modANSI.RESET_ALL))
@@ -749,56 +747,56 @@ if __name__ == '__main__':
     print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
 
-    bRunProgram = True
-    if oArgs.names:
+    isRunProgram = True
+    if args.names:
         print('Test the player names.')
-        bRunProgram = False
-        oPlayer = modPlayer.CPlayer(None)
-        for nCulture in [0, 1]:
-            ExistingFirstNames = []
-            ExistingLastNames = []
-            FirstNames, LastNames = oPlayer._GetNames(nCulture)
-            nNumNames = len(FirstNames)
-            if len(LastNames) > nNumNames:
-                nNumNames = len(LastNames)
-            for nIndex in range(nNumNames):
-                bFirstName = True
-                if nIndex < len(FirstNames):
-                    sFirstName = FirstNames[nIndex]
-                    if sFirstName in ExistingFirstNames:
-                        bFirstName = False
+        isRunProgram = False
+        player = modPlayer.Player(None)
+        for cultureIndex in [0, 1]:
+            existingFirstNames = []
+            existingLastNames = []
+            firstNames, lastNames = player.getNames(cultureIndex)
+            numNames = len(firstNames)
+            if len(lastNames) > numNames:
+                numNames = len(lastNames)
+            for nameIndex in range(numNames):
+                isFirstName = True
+                if nameIndex < len(firstNames):
+                    firstName = firstNames[nameIndex]
+                    if firstName in existingFirstNames:
+                        isFirstName = False
                     else:
-                        ExistingFirstNames.append(sFirstName)
+                        existingFirstNames.append(firstName)
                 else:
-                    sFirstName = ''
-                bLastName = True
-                if nIndex < len(LastNames):
-                    sLastName = LastNames[nIndex]
-                    if sLastName in ExistingLastNames:
-                        bLastName = False
+                    firstName = ''
+                isLastName = True
+                if nameIndex < len(lastNames):
+                    lastName = lastNames[nameIndex]
+                    if lastName in existingLastNames:
+                        isLastName = False
                     else:
-                        ExistingLastNames.append(sLastName)
+                        existingLastNames.append(lastName)
                 else:
-                    sLastName = ''
+                    lastName = ''
 
-                print('{:>2} {} {} {} {}'.format(nIndex+1, sFirstName, sLastName, 'OK' if bFirstName else 'Error', 'OK' if bLastName else 'Error'))
+                print('{:>2} {} {} {} {}'.format(nameIndex+1, firstName, lastName, 'OK' if isFirstName else 'Error', 'OK' if isLastName else 'Error'))
 
 
-    #for nCount in range(10):
+    #for count in range(10):
     #    # This works on Windows but not in IDLE.
-    #    print(nCount, end='\r', flush=True)
+    #    print(count, end='\r', flush=True)
     #
     #    # This does not work in Windows.
-    #    # print(nCount)
+    #    # print(count)
     #    # sys.stdout.write("\033[F")
     #
     #    # Wait for a second.
     #    time.sleep(1)
 
-    if bRunProgram:
+    if isRunProgram:
         # Main loop.
-        oGame = CGame()
-        oGame.Run()
+        game = Game()
+        game.run()
 
     print('Goodbye from the {}Sport Of Life{} program.'.format(modANSI.RED, modANSI.RESET_ALL))
 
