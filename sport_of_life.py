@@ -19,7 +19,7 @@ import random
 
 # Application Libraries.
 import modPlayer
-import modANSI
+import ansi
 
 
 
@@ -46,15 +46,15 @@ class Game:
             else:
                 score2 += 1
             if self.highlight == player1.name:
-                player1Colour = modANSI.MAGENTA
+                player1Colour = ansi.MAGENTA
             else:
                 player1Colour = ''
             if self.highlight == player2.name:
-                player2Colour = modANSI.MAGENTA
+                player2Colour = ansi.MAGENTA
             else:
                 player2Colour = ''
 
-            print('{}{:>22}{} {:>2} - {:<2} {}{:<22}{}'.format(player1Colour, player1.nameWithRanking(), modANSI.RESET_ALL, score1, score2, player2Colour, player2.nameWithRanking(), modANSI.RESET_ALL), end='\r', flush=True)
+            print('{}{:>22}{} {:>2} - {:<2} {}{:<22}{}'.format(player1Colour, player1.nameWithRanking(), ansi.RESET_ALL, score1, score2, player2Colour, player2.nameWithRanking(), ansi.RESET_ALL), end='\r', flush=True)
 
             self.processKeys(player1, player2)
 
@@ -389,16 +389,16 @@ class Game:
                 if count == 1:
                     player.topRanking += 1
                 if player.age >= 40:
-                    sColour = modANSI.BOLD_CYAN
+                    sColour = ansi.BOLD_CYAN
                 elif player.age >= 35:
-                    sColour = modANSI.CYAN
+                    sColour = ansi.CYAN
                 elif player.age <= 21:
-                    sColour = modANSI.YELLOW
+                    sColour = ansi.YELLOW
                 else:
                     sColour = ''
                 if player.round == -6:
                     # Winner of last tournament.
-                    sColour = modANSI.RED
+                    sColour = ansi.RED
                 print('{:>5} {}{:<22}{:>4}'.format(count, sColour, player.nameWithRanking(), player.pts), end='')
                 print('{:>13,.2f}'.format(player.seasonMoney), end='')
                 for pts in player.history:
@@ -407,7 +407,7 @@ class Game:
                 print('      ({})'.format(player.age), end='')
                 print('      ({:>4})'.format(player.skill), end='')
 
-                print('{}'.format(modANSI.RESET_ALL))
+                print('{}'.format(ansi.RESET_ALL))
             if isUpdate:
                 player.ranking = count
             count += 1
@@ -497,12 +497,12 @@ class Game:
         for player in players:
             if player.wins > 0 or player.runnerUp > 0:
                 if player.ranking > 500:
-                    print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, modANSI.CYAN, player.nameWithYearRange(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, modANSI.RESET_ALL), end='')
+                    print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, ansi.CYAN, player.nameWithYearRange(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, ansi.RESET_ALL), end='')
 
                 else:
                     if player.round == -6:
                         # Winner of last tournament.
-                        print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, modANSI.RED, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, modANSI.RESET_ALL), end='')
+                        print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, ansi.RED, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, ansi.RESET_ALL), end='')
                     else:
                         print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(count, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney), end='')
 
@@ -517,9 +517,9 @@ class Game:
     def showChampions(self, seasons, seasonYear, seasonDescription, indent):
         ''' Display the previous champions. '''
         # print('1234 123456789012345678901212345678901234567890121234567890123456789012123456789012345678901212345678901234567890121234567890123456789012')
-        print('{}'.format(modANSI.MAGENTA), end='')
+        print('{}'.format(ansi.MAGENTA), end='')
         print('     World                 China                 German                UK                    Welsh                 Shanghai')
-        print('     Champion              Open                  Masters               Championship          Open                  Masters{}'.format(modANSI.RESET_ALL))
+        print('     Champion              Open                  Masters               Championship          Open                  Masters{}'.format(ansi.RESET_ALL))
         for history in seasons:
             print(history)
         if seasonDescription != '':
@@ -742,7 +742,7 @@ if __name__ == '__main__':
     args = argParse.parse_args()
 
     # Welcome message.
-    print('{}Sport Of Life{} by Steve Walton 2018-2019.'.format(modANSI.RED, modANSI.RESET_ALL))
+    print('{}Sport Of Life{} by Steve Walton 2018-2019.'.format(ansi.RED, ansi.RESET_ALL))
     exit
     print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
     print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
@@ -798,7 +798,7 @@ if __name__ == '__main__':
         game = Game()
         game.run()
 
-    print('Goodbye from the {}Sport Of Life{} program.'.format(modANSI.RED, modANSI.RESET_ALL))
+    print('Goodbye from the {}Sport Of Life{} program.'.format(ansi.RED, ansi.RESET_ALL))
 
     # Having a problem with modInKey not restoring the echo flag to the terminal.
     # Better to get modInKey working and remove this line.

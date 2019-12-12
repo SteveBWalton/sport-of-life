@@ -14,6 +14,7 @@ except:
 import random
 
 
+
 class Player:
     '''
     Class to represent a player in the sport of life program.
