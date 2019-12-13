@@ -18,7 +18,7 @@ import time
 import random
 
 # Application Libraries.
-import modPlayer
+import player as gameplayer
 import ansi
 
 
@@ -685,7 +685,7 @@ class Game:
         print('80 players join the tour. ', end='')
         players = []
         for loop in range(80):
-            player = modPlayer.Player(None)
+            player = gameplayer.Player(None)
             player.skill = random.randint(100, 999)
             player.age = random.randint(20, 36)
             if loop < 100:
@@ -751,7 +751,7 @@ if __name__ == '__main__':
     if args.names:
         print('Test the player names.')
         isRunProgram = False
-        player = modPlayer.Player(None)
+        player = gameplayer.Player(None)
         for cultureIndex in [0, 1]:
             existingFirstNames = []
             existingLastNames = []
