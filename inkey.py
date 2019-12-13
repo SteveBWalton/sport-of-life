@@ -29,9 +29,9 @@ except ImportError:
     import termios
     def getwch():
         fd = sys.stdin.fileno()
-        global old_settings
-        old_settings = termios.tcgetattr(fd)
-        # print('tcgetattr({}) = {}'.format(fd, old_settings))
+        global oldSettings
+        oldSettings = termios.tcgetattr(fd)
+        # print('tcgetattr({}) = {}'.format(fd, oldSettings))
         try:
             # This does not work !
             # print('SetRaw')
@@ -45,11 +45,11 @@ except ImportError:
             # This use to work without the | termios.ECHO.
             # This does not work in the sport_of_life program for some reason.
 
-            #print('tcgetattr({}) = {}'.format(fd, old_settings))
+            #print('tcgetattr({}) = {}'.format(fd, oldSettings))
             # print('tcgetattr({}) = {}'.format(fd, termios.tcgetattr(fd)))
             # print('\nRestore termios\n')
-            old_settings[3] = old_settings[3] | termios.ECHO
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            oldSettings[3] = oldSettings[3] | termios.ECHO
+            termios.tcsetattr(fd, termios.TCSADRAIN, oldSettings)
             # print('tcgetattr({}) = {}'.format(fd, termios.tcgetattr(fd)))
 
             # Use 'stty --all' to see all terminal settings.
@@ -84,10 +84,10 @@ class InKey:
         ''' Restore the terminal. Sometimes there is an extra setcbreak() call.  So call here at the end to restore the ECHO after this setcbreak() call.'''
         # print('close')
         if isLinux:
-            global old_settings
-            old_settings[3] = old_settings[3] | termios.ECHO
+            global oldSettings
+            oldSettings[3] = oldSettings[3] | termios.ECHO
             fd = sys.stdin.fileno()
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            termios.tcsetattr(fd, termios.TCSADRAIN, oldSettings)
 
 
 
@@ -119,7 +119,7 @@ class InKey:
 
 def main():
     # print('Hello from modInKey.py')
-    inKey = CInKey()
+    inKey = InKey()
     # print('CInkey object created.')
     wait = 10000
     while wait > 0:

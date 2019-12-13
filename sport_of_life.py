@@ -20,6 +20,7 @@ import random
 # Application Libraries.
 import player as gameplayer
 import ansi
+import inkey
 
 
 
@@ -677,8 +678,7 @@ class Game:
     def run(self):
         ''' Execute the sport of life game. '''
         # Create a keyboard scan.
-        import modInkey
-        self.keyboard = modInkey.InKey()
+        self.keyboard = inkey.InKey()
         self.isExitGame = False
 
         # Create 80 players.
