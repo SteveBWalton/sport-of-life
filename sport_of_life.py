@@ -18,9 +18,9 @@ import time
 import random
 
 # Application Libraries.
-import player as gameplayer
+from player import Player
+from inkey import InKey
 import ansi
-import inkey
 
 
 
@@ -678,14 +678,14 @@ class Game:
     def run(self):
         ''' Execute the sport of life game. '''
         # Create a keyboard scan.
-        self.keyboard = inkey.InKey()
+        self.keyboard = InKey()
         self.isExitGame = False
 
         # Create 80 players.
         print('80 players join the tour. ', end='')
         players = []
         for loop in range(80):
-            player = gameplayer.Player(None)
+            player = Player(None)
             player.skill = random.randint(100, 999)
             player.age = random.randint(20, 36)
             if loop < 100:
@@ -751,7 +751,7 @@ if __name__ == '__main__':
     if args.names:
         print('Test the player names.')
         isRunProgram = False
-        player = gameplayer.Player(None)
+        player = Player(None)
         for cultureIndex in [0, 1]:
             existingFirstNames = []
             existingLastNames = []
