@@ -214,7 +214,7 @@ class Game:
         for player in players:
             player.round = count
             if count < 17:
-                count = count + 1
+                count += 1
             # print('{:>5} {:<22}{:>4}'.format(count, player.nameWithRanking(), player.round), end='\n')
 
         # Qualifiying.
@@ -390,17 +390,17 @@ class Game:
                 if count == 1:
                     player.topRanking += 1
                 if player.age >= 40:
-                    sColour = ansi.BOLD_CYAN
+                    colour = ansi.BOLD_CYAN
                 elif player.age >= 35:
-                    sColour = ansi.CYAN
+                    colour = ansi.CYAN
                 elif player.age <= 21:
-                    sColour = ansi.YELLOW
+                    colour = ansi.YELLOW
                 else:
-                    sColour = ''
+                    colour = ''
                 if player.round == -6:
                     # Winner of last tournament.
-                    sColour = ansi.RED
-                print('{:>5} {}{:<22}{:>4}'.format(count, sColour, player.nameWithRanking(), player.pts), end='')
+                    colour = ansi.RED
+                print('{:>5} {}{:<22}{:>4}'.format(count, colour, player.nameWithRanking(), player.pts), end='')
                 print('{:>13,.2f}'.format(player.seasonMoney), end='')
                 for pts in player.history:
                     print('{:>3}'.format(pts), end='')
@@ -517,7 +517,6 @@ class Game:
 
     def showChampions(self, seasons, seasonYear, seasonDescription, indent):
         ''' Display the previous champions. '''
-        # print('1234 123456789012345678901212345678901234567890121234567890123456789012123456789012345678901212345678901234567890121234567890123456789012')
         print('{}'.format(ansi.MAGENTA), end='')
         print('     World                 China                 German                UK                    Welsh                 Shanghai')
         print('     Champion              Open                  Masters               Championship          Open                  Masters{}'.format(ansi.RESET_ALL))
