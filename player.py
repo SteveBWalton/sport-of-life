@@ -4,13 +4,7 @@
 Module to implement Player, a class to represent a player in the sport of life program.
 '''
 
-# Require the Sqlite3 library
-try:
-    import sqlite3
-except:
-    print("pysqlite is not available");
-    print("Try package python-sqlite2");
-    sys.exit(1)
+# System libraries.
 import random
 
 
@@ -51,7 +45,7 @@ class Player:
         self.age = 17
         self.firstWin = None
         self.lastWin = None
-        self.skill_offset = 0
+        self.skillOffset = 0
         self.prizeMoney = 0
         self.seasonMoney = 0
 
@@ -83,17 +77,17 @@ class Player:
         ''' Returns the name with ranking if top 8. '''
         if self.ranking > 16:
             return self.name
-        return '{} ({})'.format(self.name, self.ranking)
+        return f'{self.name} ({self.ranking})'
 
 
 
     def nameWithYearRange(self):
         ''' Returns the name with a year range, if available. '''
-        if self.firstWin == None:
+        if self.firstWin is None:
             return self.name
         if self.firstWin == self.lastWin:
-            return '{} ({})'.format(self.name, self.firstWin)
-        return '{} ({}-{})'.format(self.name, self.firstWin, self.lastWin)
+            return f'{self.name} ({self.firstWin})'
+        return f'{self.name} ({self.firstWin}-{self.lastWin})'
 
 
 
@@ -117,9 +111,9 @@ class Player:
 
         firstNameIndex = random.randint(0, len(firstNames)-1)
         lastNameIndex = random.randint(0, len(lastNames)-1)
-        self.name = '{} {}'.format(firstNames[firstNameIndex], lastNames[lastNameIndex])
+        self.name = f'{firstNames[firstNameIndex]} {lastNames[lastNameIndex]}'
         if firstNameIndex == lastNameIndex:
-            print('Boost for {}. '.format(self.name), end='')
+            print(f'Boost for {self.name}. ', end='')
             self.skill += 200
             if firstNameIndex == 0 and cultureIndex == 0:
                 self.skill += 200

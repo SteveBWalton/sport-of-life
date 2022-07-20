@@ -11,9 +11,6 @@ import sys
 import os
 import argparse
 import platform
-import subprocess
-import shutil
-import datetime
 import time
 import random
 
@@ -436,24 +433,24 @@ class Game:
             player.skill += random.randint(-20, 20)
 
             # Reset the short term shifts.
-            if player.skill_offset != 0:
-                if player.skill_offset > 0:
+            if player.skillOffset != 0:
+                if player.skillOffset > 0:
                     player.skill += 100
-                    player.skill_offset -= 100
-                    print('{} is injuried ({}, {})'.format(player.nameWithRanking(), player.skill, player.skill_offset))
+                    player.skillOffset -= 100
+                    print('{} is injuried ({}, {})'.format(player.nameWithRanking(), player.skill, player.skillOffset))
                 else:
                     player.skill -= 100
-                    player.skill_offset += 100
-                    print('{} is boosted ({}, {})'.format(player.nameWithRanking(), player.skill, player.skill_offset))
+                    player.skillOffset += 100
+                    print('{} is boosted ({}, {})'.format(player.nameWithRanking(), player.skill, player.skillOffset))
 
             if random.randint(0, 1000) == 0:
-               print('{} has a boost.'.format(player.nameWithRanking()))
-               player.skill += 600
-               player.skill_offset -= 600
+                print('{} has a boost.'.format(player.nameWithRanking()))
+                player.skill += 600
+                player.skillOffset -= 600
             if random.randint(0, 100) == 0:
                 print('{} has an injury.'.format(player.nameWithRanking()))
                 player.skill -= 500
-                player.skill_offset += 500
+                player.skillOffset += 500
 
             if player.skill > 999:
                 player.skill -= 1
@@ -698,10 +695,10 @@ class Game:
         player = players[nPlayerID]
         print('{} has an injury.'.format(player.name))
         player.skill -= 600
-        player.skill_offset += 600
+        player.skillOffset += 600
         if player.skill < 100:
             player.skill = 100
-        print('{} {} {}'.format(player.name, player.skill, player.skill_offset))
+        print('{} {} {}'.format(player.name, player.skill, player.skillOffset))
 
         retiredPlayers = []
         seasons = []
