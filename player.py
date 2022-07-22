@@ -26,6 +26,22 @@ class Player:
         '''
         # The database that this sport is stored in.
         self.database = database
+        self.name: str = str()
+        self.skill: int = int()
+        self.round: int = int()
+        self.pts: int = int()
+        self.history = []
+        self.ranking: int = int()
+        self.wins: int = int()
+        self.runnerUp: int = int()
+        self.worldChampion: int = int()
+        self.topRanking: int = int()
+        self.age: int = int()
+        self.firstWin: int = int()
+        self.lastWin: int = int()
+        self.skillOffset: int = int()
+        self.prizeMoney: int = int()
+        self.seasonMoney: int = int()
         self.reset()
 
 
@@ -91,7 +107,7 @@ class Player:
 
 
 
-    def getNames(self, cultureIndex):
+    def getNames(self, cultureIndex):   # pylint: disable=no-self-use
         ''' Return the list of possible first names and last names in the specified culture. '''
         if cultureIndex == 1:
             # Chinese names.
