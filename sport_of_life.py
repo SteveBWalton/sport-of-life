@@ -775,7 +775,7 @@ if __name__ == '__main__':
                 else:
                     lastName = ''
 
-                print('{:>2} {} {} {} {}'.format(nameIndex+1, firstName, lastName, 'OK' if isFirstName else 'Error', 'OK' if isLastName else 'Error'))
+                print(f'{nameIndex+1:>2} {firstName} {lastName} {"OK" if isFirstName else "Error"} {"OK" if isLastName else "Error"}')
 
 
     #for count in range(10):
@@ -794,7 +794,7 @@ if __name__ == '__main__':
         game = Game()
         game.run()
 
-    print('Goodbye from the {}Sport Of Life{} program.'.format(ansi.RED, ansi.RESET_ALL))
+    print(f'Goodbye from the {ansi.RED}Sport Of Life{ansi.RESET_ALL} program.')
 
     # Having a problem with modInKey not restoring the echo flag to the terminal.
     # Better to get modInKey working and remove this line.
