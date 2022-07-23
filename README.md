@@ -1,5 +1,5 @@
 # Sport of Life
-Little test python program to work on the console under both Linux and Windows.
+Little test Python program to work on the console under both Linux and Windows.
 
 ## Keys
 
