@@ -539,9 +539,9 @@ class Game:
                 self.isFullRanking = False
             else:
                 self.showRanking(players, True, 16)
-            seasonDescription = '{:<22}'.format(winner.name)
+            seasonDescription = f'{winner.name:<22}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 5)
-            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
             winner.lastWin = seasonIndex
             self.updateSkill(players)
 
@@ -553,9 +553,9 @@ class Game:
                 self.isFullRanking = False
             else:
                 self.showRanking(players, True, 16)
-            seasonDescription = '{:<22}{}'.format(winner.name, seasonDescription)
+            seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 4)
-            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
             winner.lastWin = seasonIndex
             self.updateSkill(players)
 
@@ -567,9 +567,9 @@ class Game:
                 self.isFullRanking = False
             else:
                 self.showRanking(players, True, 16)
-            seasonDescription = '{:<22}{}'.format(winner.name, seasonDescription)
+            seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 3)
-            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
             winner.lastWin = seasonIndex
             self.updateSkill(players)
 
@@ -581,9 +581,9 @@ class Game:
                 self.isFullRanking = False
             else:
                 self.showRanking(players, True, 16)
-            seasonDescription = '{:<22}{}'.format(winner.name, seasonDescription)
+            seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 2)
-            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
             winner.lastWin = seasonIndex
             self.updateSkill(players)
 
@@ -595,9 +595,9 @@ class Game:
                 self.isFullRanking = False
             else:
                 self.showRanking(players, True, 16)
-            seasonDescription = '{:<22}{}'.format(winner.name, seasonDescription)
+            seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 1)
-            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
             winner.lastWin = seasonIndex
             self.updateSkill(players)
 
@@ -606,9 +606,9 @@ class Game:
             self.showWins(players, retiredPlayers)
             self.showRanking(players, True, 80)
             time.sleep(10)
-            seasonDescription = '{:<22}{}'.format(winner.name, seasonDescription)
+            seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 0)
-            winner.firstWin = winner.firstWin if winner.firstWin != None else seasonIndex
+            winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
             winner.lastWin = seasonIndex
             self.updateSkill(players)
 
@@ -629,10 +629,10 @@ class Game:
         ''' Select the highlighted player. '''
         print()
         print('Select Highlight')
-        print('1) {}'.format(player1.name))
-        print('2) {}'.format(player2.name))
+        print(f'1) {player1.name}')
+        print(f'2) {player2.name}')
         print('3) Remove highlight')
-        print('4) Keep {}'.format(self.highlight))
+        print(f'4) Keep {self.highlight}')
         keyScan = self.keyboard.scanKey()
         while keyScan != '1' and keyScan != '2' and keyScan != '3' and keyScan != '4':
             keyScan = self.keyboard.scanKey()
@@ -693,7 +693,7 @@ class Game:
 
         nPlayerID = random.randint(0, len(players)-1)
         player = players[nPlayerID]
-        print('{} has an injury.'.format(player.name))
+        print(f'{player.name} has an injury.')
         player.skill -= 600
         player.skillOffset += 600
         if player.skill < 100:
@@ -738,10 +738,9 @@ if __name__ == '__main__':
     args = argParse.parse_args()
 
     # Welcome message.
-    print('{}Sport Of Life{} by Steve Walton 2018-2019.'.format(ansi.RED, ansi.RESET_ALL))
-    exit
-    print('Python Version {}.{}.{} (expecting Python 3).'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro))
-    print('Operating System is "{}".  Desktop is "{}".'.format(platform.system(), os.environ.get('DESKTOP_SESSION')))
+    print(f'{ansi.RED}Sport Of Life{ansi.RESET_ALL} by Steve Walton 2018-2022.')
+    print(f'Python Version {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} (expecting Python 3).')
+    print(f'Operating System is "{platform.system()}".  Desktop is "{os.environ.get("DESKTOP_SESSION")}".')
 
     isRunProgram = True
     if args.names:
