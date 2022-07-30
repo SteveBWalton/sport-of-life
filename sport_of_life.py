@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+N#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -109,7 +109,7 @@ class Game:
         for player in players:
             player.round = count
             if count < 17:
-                count = count + 1
+                count += 1
             # print('{:>5} {:<22}{:>4}'.format(count, player.nameWithRanking(), player.round), end='\n')
 
 
