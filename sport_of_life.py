@@ -485,7 +485,7 @@ class Game:
 
 
 
-    def showWins(self, players, retiredPlayers):
+    def showWins(self, players, retiredPlayers):    # pylint: disable=no-self-use
         ''' Display the players in ranking points order. '''
         # Sort by pts.
         players = sorted(players + retiredPlayers, key=lambda Player: (Player.wins, Player.runnerUp), reverse=True)
@@ -500,9 +500,9 @@ class Game:
                 else:
                     if player.round == -6:
                         # Winner of last tournament.
-                        print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, ansi.RED, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, ansi.RESET_ALL), end='')
+                        print(f'{count:>5} {ansi.RED}{player.nameWithRanking():<28}{player.wins:>4}{player.wins + player.runnerUp:>4}{player.worldChampion:>8}{player.topRanking / 6:>8.1f}{player.prizeMoney:>14,.2f}{ansi.RESET_ALL}', end='')
                     else:
-                        print('{:>5} {:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}'.format(count, player.nameWithRanking(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney), end='')
+                        print(f'{count:>5} {player.nameWithRanking():<28}{player.wins:>4}{player.wins + player.runnerUp:>4}{player.worldChampion:>8}{player.topRanking / 6:>8.1f}{player.prizeMoney:>14,.2f}', end='')
 
                 print()
             count += 1
@@ -512,15 +512,15 @@ class Game:
 
 
 
-    def showChampions(self, seasons, seasonYear, seasonDescription, indent):
+    def showChampions(self, seasons, seasonYear, seasonDescription, indent):    #pylint: disable=no-self-use
         ''' Display the previous champions. '''
-        print('{}'.format(ansi.MAGENTA), end='')
+        print(f'{ansi.MAGENTA}', end='')
         print('     World                 China                 German                UK                    Welsh                 Shanghai')
-        print('     Champion              Open                  Masters               Championship          Open                  Masters{}'.format(ansi.RESET_ALL))
+        print(f'     Champion              Open                  Masters               Championship          Open                  Masters{ansi.RESET_ALL}')
         for history in seasons:
             print(history)
         if seasonDescription != '':
-            print('{} {}{}'.format(seasonYear, ' ' * (22 * indent), seasonDescription))
+            print(f'{seasonYear} {" " * (22 * indent)}{seasonDescription}')
 
 
 
@@ -661,7 +661,7 @@ class Game:
 
 
 
-    def showKeys(self):
+    def showKeys(self): # pylint: disable=no-self-use
         ''' Display the keys that are used in the program. '''
         print('Keys')
         print('   q    Quit the program.')
@@ -698,7 +698,7 @@ class Game:
         player.skillOffset += 600
         if player.skill < 100:
             player.skill = 100
-        print('{} {} {}'.format(player.name, player.skill, player.skillOffset))
+        print(f'{player.name} {player.skill} {player.skillOffset}')
 
         retiredPlayers = []
         seasons = []
@@ -717,7 +717,7 @@ class Game:
                 if player.seasonMoney > topMoneyPlayer.seasonMoney:
                     topMoneyPlayer = player
 
-            seasons.append('{} {} {:>4} {:<22} {:>12,.2f} {}'.format(loop, seasonDescription, numberOnePlayer.pts, numberOnePlayer.name, topMoneyPlayer.seasonMoney, topMoneyPlayer.name))
+            seasons.append(f'{loop} {seasonDescription} {numberOnePlayer.pts:>4} {numberOnePlayer.name:<22} {topMoneyPlayer.seasonMoney:>12,.2f} {topMoneyPlayer.name}')
 
             prizeMoney *= 1.03
             loop += 1
