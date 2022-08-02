@@ -52,7 +52,7 @@ class Game:
             else:
                 player2Colour = ''
 
-            print('{}{:>22}{} {:>2} - {:<2} {}{:<22}{}'.format(player1Colour, player1.nameWithRanking(), ansi.RESET_ALL, score1, score2, player2Colour, player2.nameWithRanking(), ansi.RESET_ALL), end='\r', flush=True)
+            print(f'{player1Colour}{player1.nameWithRanking():>22}{ansi.RESET_ALL} {score1:>2} - {score2:<2} {player2Colour}{player2.nameWithRanking():<22}{ansi.RESET_ALL}', end='\r', flush=True)
 
             self.processKeys(player1, player2)
 
@@ -71,7 +71,7 @@ class Game:
 
     def playRound(self, players, keyHome, keyAway, keyWin, keyLose, numMatches, scoreTarget):
         ''' Play a round of a tournament. '''
-        for matchCount in range(numMatches):
+        for _matchCount in range(numMatches):
             # Find 2 players that are in this round.
             player1Index = random.randint(0, len(players)-1)
             while players[player1Index].round != keyHome:
@@ -88,7 +88,7 @@ class Game:
                 player1Index, player2Index = player2Index, player1Index
 
             # Play the match.
-            winner, loser = self.playMatch(players[player1Index], players[player2Index], scoreTarget)
+            _winner, loser = self.playMatch(players[player1Index], players[player2Index], scoreTarget)
             loser.round = keyLose
 
 
@@ -98,7 +98,7 @@ class Game:
         Play a tournament with seeded players.
         64 Unseeded players in 2 qualifying rounds.
          '''
-        print('{}{} (Seeded)'.format(' ' * 15, title))
+        print(f'{" " * 15}{title} (Seeded)')
         self.isWait = True
 
         # Sort by pts.
@@ -374,7 +374,7 @@ class Game:
 
 
 
-    def showRanking(self, players, isUpdate, numShow):
+    def showRanking(self, players, isUpdate, numShow):  # pylint: disable=no-self-use
         ''' Display the players in ranking points order. '''
         # Sort by pts.
         players = sorted(players, key=lambda Player: Player.pts, reverse=True)
@@ -397,15 +397,15 @@ class Game:
                 if player.round == -6:
                     # Winner of last tournament.
                     colour = ansi.RED
-                print('{:>5} {}{:<22}{:>4}'.format(count, colour, player.nameWithRanking(), player.pts), end='')
-                print('{:>13,.2f}'.format(player.seasonMoney), end='')
+                print(f'{count:>5} {colour}{player.nameWithRanking():<22}{player.pts:>4}', end='')
+                print(f'{player.seasonMoney:>13,.2f}', end='')
                 for pts in player.history:
-                    print('{:>3}'.format(pts), end='')
+                    print(f'{pts:>3}', end='')
 
-                print('      ({})'.format(player.age), end='')
-                print('      ({:>4})'.format(player.skill), end='')
+                print(f'      ({player.age})', end='')
+                print(f'      ({player.skill:>4})', end='')
 
-                print('{}'.format(ansi.RESET_ALL))
+                print(f'{ansi.RESET_ALL}')
             if isUpdate:
                 player.ranking = count
             count += 1
@@ -437,18 +437,18 @@ class Game:
                 if player.skillOffset > 0:
                     player.skill += 100
                     player.skillOffset -= 100
-                    print('{} is injuried ({}, {})'.format(player.nameWithRanking(), player.skill, player.skillOffset))
+                    print(f'{player.nameWithRanking()} is injuried ({player.skill}, {player.skillOffset})')
                 else:
                     player.skill -= 100
                     player.skillOffset += 100
-                    print('{} is boosted ({}, {})'.format(player.nameWithRanking(), player.skill, player.skillOffset))
+                    print(f'{player.nameWithRanking()} is boosted ({player.skill}, {player.skillOffset})')
 
             if random.randint(0, 1000) == 0:
-                print('{} has a boost.'.format(player.nameWithRanking()))
+                print(f'{player.nameWithRanking()} has a boost.')
                 player.skill += 600
                 player.skillOffset -= 600
             if random.randint(0, 100) == 0:
-                print('{} has an injury.'.format(player.nameWithRanking()))
+                print(f'{player.nameWithRanking()} has an injury.')
                 player.skill -= 500
                 player.skillOffset += 500
 
@@ -460,12 +460,12 @@ class Game:
 
 
 
-    def addAge(self, players, retiredPlayers):
+    def addAge(self, players, retiredPlayers):  # pylint: disable=no-self-use
         ''' Update the age of the players. '''
         for player in players:
             player.age += 1
             if player.ranking > 70 and player.age > 35:
-                print('{} has retired, aged {}. '.format(player.name, player.age), end='')
+                print(f'{player.name} has retired, aged {player.age}. ', end='')
                 retiredPlayer = player.retire()
                 retiredPlayers.append(retiredPlayer)
 
@@ -475,7 +475,7 @@ class Game:
                 if random.randint(0, 6) == 4:
                     cultureIndex = 1
                 player.randomName(cultureIndex)
-                print('{} has joined the tour.'.format(player.name))
+                print(f'{player.name} has joined the tour.')
 
         # Wait.
         time.sleep(1)
@@ -495,7 +495,7 @@ class Game:
         for player in players:
             if player.wins > 0 or player.runnerUp > 0:
                 if player.ranking > 500:
-                    print('{:>5} {}{:<28}{:>4}{:>4}{:>8}{:>8.1f}{:>14,.2f}{}'.format(count, ansi.CYAN, player.nameWithYearRange(), player.wins, player.wins + player.runnerUp, player.worldChampion, player.topRanking / 6, player.prizeMoney, ansi.RESET_ALL), end='')
+                    print(f'{count:>5} {ansi.CYAN}{player.nameWithYearRange():<28}{player.wins:>4}{player.wins + player.runnerUp:>4}{player.worldChampion:>8}{player.topRanking / 6:>8.1f}{player.prizeMoney:>14,.2f}{ansi.RESET_ALL}', end='')
 
                 else:
                     if player.round == -6:
@@ -730,6 +730,40 @@ class Game:
 
 
 
+def testPlayerNames():
+    ''' Test the player names for duplicates. '''
+    player = Player(None)
+    for cultureIndex in [0, 1]:
+        existingFirstNames = []
+        existingLastNames = []
+        firstNames, lastNames = player.getNames(cultureIndex)
+        numNames = len(firstNames)
+        if len(lastNames) > numNames:
+            numNames = len(lastNames)
+        for nameIndex in range(numNames):
+            isFirstName = True
+            if nameIndex < len(firstNames):
+                firstName = firstNames[nameIndex]
+                if firstName in existingFirstNames:
+                    isFirstName = False
+                else:
+                    existingFirstNames.append(firstName)
+            else:
+                firstName = ''
+            isLastName = True
+            if nameIndex < len(lastNames):
+                lastName = lastNames[nameIndex]
+                if lastName in existingLastNames:
+                    isLastName = False
+                else:
+                    existingLastNames.append(lastName)
+            else:
+                lastName = ''
+
+            print(f'{nameIndex+1:>2} {firstName} {lastName} {"OK" if isFirstName else "Error"} {"OK" if isLastName else "Error"}')
+
+
+
 if __name__ == '__main__':
     # Process the command line arguments.
     # This might end the program (--help).
@@ -746,35 +780,7 @@ if __name__ == '__main__':
     if args.names:
         print('Test the player names.')
         isRunProgram = False
-        player = Player(None)
-        for cultureIndex in [0, 1]:
-            existingFirstNames = []
-            existingLastNames = []
-            firstNames, lastNames = player.getNames(cultureIndex)
-            numNames = len(firstNames)
-            if len(lastNames) > numNames:
-                numNames = len(lastNames)
-            for nameIndex in range(numNames):
-                isFirstName = True
-                if nameIndex < len(firstNames):
-                    firstName = firstNames[nameIndex]
-                    if firstName in existingFirstNames:
-                        isFirstName = False
-                    else:
-                        existingFirstNames.append(firstName)
-                else:
-                    firstName = ''
-                isLastName = True
-                if nameIndex < len(lastNames):
-                    lastName = lastNames[nameIndex]
-                    if lastName in existingLastNames:
-                        isLastName = False
-                    else:
-                        existingLastNames.append(lastName)
-                else:
-                    lastName = ''
-
-                print(f'{nameIndex+1:>2} {firstName} {lastName} {"OK" if isFirstName else "Error"} {"OK" if isLastName else "Error"}')
+        testPlayerNames()
 
 
     #for count in range(10):
