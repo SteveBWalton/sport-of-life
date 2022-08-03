@@ -114,14 +114,14 @@ class Game:
 
 
         # Qualifiying.
-        print('{} Qualifying 1'.format(title))
+        print(f'{title} Qualifying 1')
         self.playRound(players, 17, 17, 18, 0, 32, 5)
 
-        print('{} Qualifying 2'.format(title))
+        print(f'{title} Qualifying 2')
         self.playRound(players, 18, 18, 19, 0, 16, 5)
 
         # Round One.
-        print('{} Round One'.format(title))
+        print(f'{title} Round One')
         self.playRound(players, 1, 19, 20, -1, 1, 6)
         self.playRound(players, 16, 19, 20, -1, 1, 6)
         self.playRound(players, 9, 19, 21, -1, 1, 6)
@@ -140,7 +140,7 @@ class Game:
         self.playRound(players, 2, 19, 27, -1, 1, 6)
 
         # Round Two.
-        print('{} Round Two'.format(title))
+        print(f'{title} Round Two')
         self.playRound(players, 20, 20, 30, -2, 1, 9)
         self.playRound(players, 21, 21, 30, -2, 1, 9)
         self.playRound(players, 22, 22, 31, -2, 1, 9)
@@ -151,18 +151,18 @@ class Game:
         self.playRound(players, 27, 27, 33, -2, 1, 9)
 
         # Quarter Finals.
-        print('{} Quarter Finals'.format(title))
+        print(f'{title} Quarter Finals')
         self.playRound(players, 30, 30, 40, -3, 1, 10)
         self.playRound(players, 31, 31, 40, -3, 1, 10)
         self.playRound(players, 32, 32, 41, -3, 1, 10)
         self.playRound(players, 33, 33, 41, -3, 1, 10)
 
         # Semi Finals.
-        print('{} Semi Finals'.format(title))
+        print(f'{title} Semi Finals')
         self.playRound(players, 40, 40, 50, -4, 1, 13)
         self.playRound(players, 41, 41, 50, -4, 1, 13)
 
-        print('{} Final'.format(title))
+        print(f'{title} Final')
         self.playRound(players, 50, 50, -6, -5, 1, 17)
 
         # Allocate ranking points and find the winner.
