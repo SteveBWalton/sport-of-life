@@ -200,7 +200,7 @@ class Game:
 
     def playWorldChampionshipTournament(self, players, prizeMoney):
         ''' Play a world championship tournament. '''
-        print('{}World Championship'.format(' ' * 15))
+        print(f'{" " * 15}World Championship')
         self.isWait = True
 
         # Sort by pts.
@@ -307,14 +307,14 @@ class Game:
         Qualifying 1 80 Players 16 matches to get 64 players.
         Qualifying 2 64 players 32 matches to get 32 players.
         '''
-        print('{}{} (Open)'.format(' ' * 15, title))
+        print(f'{" " * 15}{title} (Open)')
         self.isWait = True
 
         for player in players:
             player.round = 1
 
         # Qualifiying.
-        print('{} Qualifying 1'.format(title))
+        print(f'{title} Qualifying 1')
         self.playRound(players, 1, 1, 2, 0, 16, 5)
 
         # Put the winners back into qualifying.
@@ -322,26 +322,26 @@ class Game:
             if player.round == 2:
                 player.round = 1
 
-        print('{} Qualifying 2'.format(title))
+        print(f'{title} Qualifying 2')
         self.playRound(players, 1, 1, 2, 0, 32, 5)
 
         # Round One.
-        print('{} Round One'.format(title))
+        print(f'{title} Round One')
         self.playRound(players, 2, 2, 3, -1, 16, 6)
 
         # Round Two.
-        print('{} Round Two'.format(title))
+        print(f'{title} Round Two')
         self.playRound(players, 3, 3, 4, -2, 8, 6)
 
         # Quarter Finals.
-        print('{} Quarter Finals'.format(title))
+        print(f'{title} Quarter Finals')
         self.playRound(players, 4, 4, 5, -3, 4, 6)
 
         # Semi Finals.
-        print('{} Semi Finals'.format(title))
+        print(f'{title} Semi Finals')
         self.playRound(players, 5, 5, 6, -4, 2, 9)
 
-        print('{} Final'.format(title))
+        print(f'{title} Final')
         self.playRound(players, 6, 6, -6, -5, 1, 10)
 
         # Allocate ranking points and find the winner.
@@ -380,7 +380,7 @@ class Game:
         players = sorted(players, key=lambda Player: Player.pts, reverse=True)
         # players = sorted(players, key=attrgetter('pts'), reverse=True)
 
-        print('Top {}'.format(numShow))
+        print(f'Top {numShow}')
         count = 1
         for player in players:
             if count <= numShow:
@@ -414,6 +414,7 @@ class Game:
         time.sleep(1)
 
 
+    # pylint: disable=no-self-use
     def updateSkill(self, players):
         ''' Update the skill of the players. '''
         for player in players:
@@ -455,8 +456,7 @@ class Game:
             if player.skill > 999:
                 player.skill -= 1
 
-            if player.skill < 100:
-                player.skill = 100
+            player.skill = max(100, player.skill)
 
 
 
@@ -634,7 +634,8 @@ class Game:
         print('3) Remove highlight')
         print(f'4) Keep {self.highlight}')
         keyScan = self.keyboard.scanKey()
-        while keyScan != '1' and keyScan != '2' and keyScan != '3' and keyScan != '4':
+        # while keyScan != '1' and keyScan != '2' and keyScan != '3' and keyScan != '4':
+        while keyScan not in ('1', '2', '3', '4'):
             keyScan = self.keyboard.scanKey()
 
         if keyScan == '1':
@@ -696,8 +697,7 @@ class Game:
         print(f'{player.name} has an injury.')
         player.skill -= 600
         player.skillOffset += 600
-        if player.skill < 100:
-            player.skill = 100
+        player.skill = max(100, player.skill)
         print(f'{player.name} {player.skill} {player.skillOffset}')
 
         retiredPlayers = []
