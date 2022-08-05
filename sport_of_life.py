@@ -43,22 +43,26 @@ class Game:
                 score1 += 1
             else:
                 score2 += 1
-            if self.highlight == player1.name:
-                player1Colour = ansi.MAGENTA
-            else:
-                player1Colour = ''
-            if self.highlight == player2.name:
-                player2Colour = ansi.MAGENTA
-            else:
-                player2Colour = ''
+            player1Colour = ansi.MAGENTA if self.highlight == player1.name else ''
+            player2Colour = ansi.MAGENTA if self.highlight == player2.name else ''
+            resetScore = ansi.RESET_ALL
 
-            print(f'{player1Colour}{player1.nameWithRanking():>22}{ansi.RESET_ALL} {score1:>2} - {score2:<2} {player2Colour}{player2.nameWithRanking():<22}{ansi.RESET_ALL}', end='\r', flush=True)
+            # Highlight a close score.
+            if score1 >= winTarget - 1  and score2 >= winTarget - 1:
+                resetScore = ansi.RED
+                if player2Colour == '':
+                    player2Colour = ansi.RESET_ALL
+
+            print(f'{player1Colour}{player1.nameWithRanking():>22}{resetScore} {score1:>2} - {score2:<2} {player2Colour}{player2.nameWithRanking():<22}{ansi.RESET_ALL}', end='\r', flush=True)
 
             self.processKeys(player1, player2)
 
             if self.isWait:
                 # Wait.
                 time.sleep(0.25)
+                # Extra wait before
+                if score1 == winTarget - 1  and score2 == winTarget - 1:
+                    time.sleep(0.5)
 
         print()
 
@@ -386,7 +390,9 @@ class Game:
             if count <= numShow:
                 if count == 1:
                     player.topRanking += 1
-                if player.age >= 40:
+                if self.highlight == player.name:
+                    colour = ansi.MAGENTA
+                elif player.age >= 40:
                     colour = ansi.BOLD_CYAN
                 elif player.age >= 35:
                     colour = ansi.CYAN
@@ -430,6 +436,10 @@ class Game:
             elif player.age >= 30:
                 player.skill -= 2
 
+            # Add bias.
+            if self.highlight == player.name:
+                player.skill += 3
+
             # Add random skill.
             player.skill += random.randint(-20, 20)
 
@@ -444,6 +454,7 @@ class Game:
                     player.skillOffset += 100
                     print(f'{player.nameWithRanking()} is boosted ({player.skill}, {player.skillOffset})')
 
+            # Add some random short term shifts.
             if random.randint(0, 1000) == 0:
                 print(f'{player.nameWithRanking()} has a boost.')
                 player.skill += 600
@@ -453,9 +464,11 @@ class Game:
                 player.skill -= 500
                 player.skillOffset += 500
 
+            # Soft skill upper limit.
             if player.skill > 999:
                 player.skill -= 1
 
+            # Hard skill lower limit.
             player.skill = max(100, player.skill)
 
 
@@ -538,7 +551,7 @@ class Game:
                 self.showRanking(players, True, 80)
                 self.isFullRanking = False
             else:
-                self.showRanking(players, True, 16)
+                self.showRanking(players, True, 17)
             seasonDescription = f'{winner.name:<22}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 5)
             winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
@@ -552,7 +565,7 @@ class Game:
                 self.showRanking(players, True, 80)
                 self.isFullRanking = False
             else:
-                self.showRanking(players, True, 16)
+                self.showRanking(players, True, 17)
             seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 4)
             winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
@@ -566,7 +579,7 @@ class Game:
                 self.showRanking(players, True, 80)
                 self.isFullRanking = False
             else:
-                self.showRanking(players, True, 16)
+                self.showRanking(players, True, 17)
             seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 3)
             winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
@@ -580,7 +593,7 @@ class Game:
                 self.showRanking(players, True, 80)
                 self.isFullRanking = False
             else:
-                self.showRanking(players, True, 16)
+                self.showRanking(players, True, 17)
             seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 2)
             winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
@@ -594,7 +607,7 @@ class Game:
                 self.showRanking(players, True, 80)
                 self.isFullRanking = False
             else:
-                self.showRanking(players, True, 16)
+                self.showRanking(players, True, 17)
             seasonDescription = f'{winner.name:<22}{seasonDescription}'
             self.showChampions(seasons, seasonIndex, seasonDescription, 1)
             winner.firstWin = winner.firstWin if winner.firstWin is not None else seasonIndex
