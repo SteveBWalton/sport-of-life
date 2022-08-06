@@ -62,7 +62,7 @@ class Game:
                 time.sleep(0.25)
                 # Extra wait before
                 if score1 == winTarget - 1  and score2 == winTarget - 1:
-                    time.sleep(1.5)
+                    time.sleep(1.0)
 
         print()
 
