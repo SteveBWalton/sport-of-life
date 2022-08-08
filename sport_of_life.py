@@ -30,8 +30,8 @@ class Game:
         ''' Class constructor. '''
         self.isWait = True
         self.isFullRanking = False
+        self.isExitGame = False
         self.highlight = ''
-
 
 
     def playMatch(self, player1, player2, winTarget):
