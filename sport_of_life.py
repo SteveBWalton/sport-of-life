@@ -32,6 +32,8 @@ class Game:
         self.isFullRanking = False
         self.isExitGame = False
         self.highlight = ''
+        self.avgSkill = 0.0
+
 
 
     def playMatch(self, player1, player2, winTarget):
@@ -423,6 +425,7 @@ class Game:
     # pylint: disable=no-self-use
     def updateSkill(self, players):
         ''' Update the skill of the players. '''
+        avgSkill = 0.0
         for player in players:
             # Add age related skill.
             if player.age <= 20:
@@ -470,6 +473,11 @@ class Game:
 
             # Hard skill lower limit.
             player.skill = max(100, player.skill)
+
+            avgSkill += player.skill / len(players)
+
+        print(f'Average Skill = {avgSkill:.1f} <= {self.avgSkill:.1f}')
+        self.avgSkill = avgSkill
 
 
 
@@ -694,6 +702,7 @@ class Game:
         # Create 80 players.
         print('80 players join the tour. ', end='')
         players = []
+        self.avgSkill = 0
         for loop in range(80):
             player = Player(None)
             player.skill = random.randint(100, 999)
@@ -703,10 +712,12 @@ class Game:
             else:
                 player.randomName(1)
             players.append(player)
+            self.avgSkill += player.skill / 80.0
         print()
 
-        nPlayerID = random.randint(0, len(players)-1)
-        player = players[nPlayerID]
+
+        playerIndex = random.randint(0, len(players)-1)
+        player = players[playerIndex]
         print(f'{player.name} has an injury.')
         player.skill -= 600
         player.skillOffset += 600
