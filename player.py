@@ -14,6 +14,9 @@ class Player:
     Class to represent a player in the sport of life program.
 
     :ivar Database database: The database that this player is stored in.
+    :ivar str name: The name of the player.
+    :ivar int skill: The skill level of the player.
+    :ivar int age: The age of the player.
     '''
 
 
