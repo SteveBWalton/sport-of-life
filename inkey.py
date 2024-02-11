@@ -75,7 +75,7 @@ class InKey:
 
     def __del__(self):
         ''' Class destructor. '''
-        # print('CInKey class destructor.')
+        # print('InKey class destructor.')
         self.close()
 
 
