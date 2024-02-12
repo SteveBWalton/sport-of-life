@@ -69,7 +69,7 @@ class InKey:
         self.lastKey = None
         # print('_thread.start_new_thread.')
         _thread.start_new_thread(self._keypress, ())
-        # print('CInKey class constructor finished.')
+        # print('InKey class constructor finished.')
 
 
 
